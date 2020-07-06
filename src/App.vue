@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <v-content background-color="red">
+    <v-main>
       <router-view :key="$route.fullPath"/>
-    </v-content>
+    </v-main>
     <mobile-nav app/>
   </v-app>
 </template>

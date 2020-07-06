@@ -9,9 +9,12 @@
       <v-icon>mdi-history</v-icon>
     </v-btn>
 
-    <v-btn value="favorites">
+    <v-btn
+      value="camera"
+      @click="openCamera">
       <span>Foto</span>
       <v-icon>mdi-camera</v-icon>
+      <camera-component ref="camera"/>
     </v-btn>
 
     <v-btn value="nearby">
@@ -22,10 +25,21 @@
 </template>
 
 <script>
+
+import CameraComponent from './Camera'
+
 export default {
+  components: {
+    CameraComponent
+  },
   data () {
     return {
       bottomNav: 'recent'
+    }
+  },
+  methods: {
+    openCamera () {
+      this.$refs.camera.openCamera()
     }
   }
 }
