@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+    <span v-if="!cameraPermission">Para poder tomar fotos de sus observaciones necesitamos que autorice la utilización de la camara</span>
   </div>
 </template>
 
@@ -14,8 +14,13 @@ export default {
   },
   data () {
     return {
-
+      cameraPermission: false
     }
+  },
+  created () {
+    navigator.permissions.query({ name: 'camera' }).then(result => {
+      this.cameraPermission = result.status === 'granted'
+    })
   }
 }
 </script>
