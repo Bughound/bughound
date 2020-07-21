@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Observations from '../views/Observations.vue'
+import Mapa from '../views/Mapa.vue'
 
 Vue.use(VueRouter)
 
@@ -20,12 +21,17 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    component: Home
+    component: Mapa
   },
   {
     path: '/observations',
     name: 'Observations',
     component: Observations
+  },
+  {
+    path: '/mapa',
+    name: 'mapa',
+    component: Mapa
   },
   {
     path: '/about',
