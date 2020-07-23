@@ -1,16 +1,33 @@
 <template>
   <div style="height: 100%;">
-    <map-component/>
+    <map-component :geojson="geojson"/>
   </div>
 </template>
 
 <script>
 
 import MapComponent from '@/components/Map.vue'
+import { makeRequest } from '@/helpers/makeRequest'
+
 export default {
   name: 'Mapa',
   components: {
     MapComponent
+  },
+  computed: {
+    geojson () {
+      return this.observations.filter(item => item.geojson).map(item => item.geojson)
+    }
+  },
+  data () {
+    return {
+      observations: []
+    }
+  },
+  mounted () {
+    makeRequest('get', '/observations').then(response => {
+      this.observations = response.data
+    })
   }
 }
 </script>

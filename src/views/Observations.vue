@@ -4,28 +4,19 @@
     three-line>
     <v-subheader>Observaciones</v-subheader>
     <template v-for="(item, index) in observations">
-      <v-subheader
-        v-if="item.header"
-        :key="item.header"
-        v-text="item.header"
-      ></v-subheader>
-
       <v-divider
-        v-else-if="item.divider"
         :key="index"
-        :inset="item.inset"
       ></v-divider>
 
       <v-list-item
-        v-else
-        :key="item.title"
+        :key="item.id"
       >
         <v-list-item-avatar>
-          <v-img :src="item.avatar"></v-img>
+          <v-img :src="imageRoute(item.image.formats.thumbnail.url)"></v-img>
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title v-html="composeScientificName(item.taxon)"></v-list-item-title>
+          <v-list-item-title v-html="composeScientificName(item)"></v-list-item-title>
           <v-list-item-subtitle v-html="item.date"></v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -37,45 +28,35 @@
 </template>
 
 <script>
+
+import { makeRequest } from '@/helpers/makeRequest'
+import apiRoute from '@/helpers/apiRoute'
+
 export default {
+  computed: {
+
+  },
   data () {
     return {
-      observations: [
-        {
-          taxon: {
-            name: 'elongatus',
-            rank: 'Especie',
-            parent: {
-              name: 'Dichroplus'
-            }
-          },
-          importance: {
-            type: 'Economica',
-            level: 5
-          },
-          date: '02/07/2020'
-        },
-        {
-          taxon: {
-            name: 'alienus',
-            importance: {
-              type: 'Economica',
-              level: 5
-            },
-            rank: 'Especie',
-            parent: {
-              name: 'Jivarus'
-            }
-          },
-          date: '13/02/2020'
-        }
-      ]
+      observations: []
     }
   },
+  mounted () {
+    makeRequest('get', '/observations').then(response => {
+      const observationsResponse = response.data
+      const promises = observationsResponse.map(observation => makeRequest('get', `/taxons/${observation.taxon.parent}`))
+
+      Promise.all(promises).then((parentsResponse) => {
+        const parents = parentsResponse.map(parent => parent.data)
+        this.observations = observationsResponse.map(observation => Object.assign(observation, { parent: parents.find(parent => parent.id === observation.taxon.parent) }))
+      })
+    })
+  },
   methods: {
-    composeScientificName (taxon) {
-      return `${taxon.parent.name} ${taxon.name}`
-    }
+    composeScientificName (observation) {
+      return `${observation.parent.name} ${observation.taxon.name}`
+    },
+    imageRoute: (path) => `${apiRoute}${path}`
   }
 }
 </script>

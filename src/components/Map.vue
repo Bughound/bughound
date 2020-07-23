@@ -47,12 +47,24 @@ export default {
         attributionControl: false,
         zoomControl: false
       }
-
+    }
+  },
+  watch: {
+    geojson: {
+      handler (newVal) {
+        this.setGeoJSON(newVal)
+      },
+      deep: true
     }
   },
   mounted () {
     this.map = L.map(this.$refs.leafletMap, this.config).setView([-37.979858, -57.589794], 5)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map)
+  },
+  methods: {
+    setGeoJSON (geojson) {
+      L.geoJSON(geojson).addTo(this.map)
+    }
   }
 }
 </script>
