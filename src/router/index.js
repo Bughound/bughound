@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Observations from '../views/Observations.vue'
 import Mapa from '../views/Mapa.vue'
+import Observation from '../views/Observation.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [
     path: '/observations',
     name: 'Observations',
     component: Observations
+  },
+  {
+    path: '/observations/:id',
+    name: 'Observations',
+    component: Observation
   },
   {
     path: '/mapa',
