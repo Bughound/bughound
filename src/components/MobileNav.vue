@@ -1,12 +1,23 @@
 <template>
+<div>
   <v-bottom-navigation
     app
     grow
+    shift
+    dark
     v-model="bottomNav"
   >
-    <v-btn value="recent">
+    <v-btn
+      value="Home">
+      <span>Inicio</span>
+      <v-icon>mdi-home</v-icon>
+    </v-btn>
+
+    <v-btn
+      :to="{ name: 'Observaciones' }"
+      value="Recent">
       <span>Observaciones</span>
-      <v-icon>mdi-history</v-icon>
+      <v-icon>mdi-file-find</v-icon>
     </v-btn>
 
     <v-btn
@@ -17,11 +28,14 @@
       <camera-component ref="camera"/>
     </v-btn>
 
-    <v-btn value="nearby">
-      <span>Zonas</span>
+    <v-btn
+      :to="{ name: 'Mapa' }"
+      value="Map">
+      <span>Mapa</span>
       <v-icon>mdi-map-marker</v-icon>
     </v-btn>
   </v-bottom-navigation>
+</div>
 </template>
 
 <script>
@@ -47,6 +61,6 @@ export default {
 
 <style>
   .v-item-group.v-bottom-navigation .v-btn.v-size--default {
-    height: inherit;
+     height: inherit;
   }
 </style>

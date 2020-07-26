@@ -26,17 +26,17 @@ const routes = [
   },
   {
     path: '/observations',
-    name: 'Observations',
+    name: 'Observaciones',
     component: Observations
   },
   {
     path: '/observations/:id',
-    name: 'Observations',
+    name: 'Observacion',
     component: Observation
   },
   {
     path: '/mapa',
-    name: 'mapa',
+    name: 'Mapa',
     component: Mapa
   },
   {

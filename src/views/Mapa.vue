@@ -1,6 +1,17 @@
 <template>
   <div style="height: 100%;">
     <map-component :geojson="geojson"/>
+    <v-btn
+      color="primary"
+      style="bottom: 80px"
+      dark
+      fixed
+      bottom
+      right
+      fab
+     >
+      <v-icon>mdi-camera</v-icon>
+    </v-btn>
   </div>
 </template>
 

@@ -1,8 +1,5 @@
 <template>
-  <v-list
-    subheader
-    three-line>
-    <v-subheader>Observaciones</v-subheader>
+    <v-list three-line>
     <template v-for="(item, index) in observations">
       <v-divider
         :key="index"
@@ -10,6 +7,7 @@
 
       <v-list-item
         :key="item.id"
+        :to="{ name: 'Observacion', params: { id: item.id } }"
       >
         <v-list-item-avatar>
           <v-img :src="imageRoute(item.image.formats.thumbnail.url)"></v-img>

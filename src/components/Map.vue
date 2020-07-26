@@ -29,6 +29,14 @@ export default {
     width: {
       type: String,
       default: '100%'
+    },
+    maxZoom: {
+      type: Number,
+      default: 8
+    },
+    zoomAnimation: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -43,6 +51,7 @@ export default {
   data () {
     return {
       map: undefined,
+      features: [],
       config: {
         attributionControl: false,
         zoomControl: false
@@ -52,18 +61,24 @@ export default {
   watch: {
     geojson: {
       handler (newVal) {
-        this.setGeoJSON(newVal)
+        if (newVal) {
+          this.setGeoJSON(newVal)
+        }
       },
-      deep: true
+      deep: true,
+      immediate: true
     }
   },
   mounted () {
-    this.map = L.map(this.$refs.leafletMap, this.config).setView([-37.979858, -57.589794], 5)
+    this.map = L.map(this.$refs.leafletMap, this.config).setView([0, 0], 2)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map)
   },
   methods: {
     setGeoJSON (geojson) {
-      L.geoJSON(geojson).addTo(this.map)
+      this.features = L.geoJSON(geojson).addTo(this.map)
+      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.features.getBounds(), {
+        maxZoom: this.maxZoom
+      })
     }
   }
 }

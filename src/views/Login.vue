@@ -1,17 +1,20 @@
 <template>
-  <v-container class="pa-10">
-    <v-row align="center" justify="center">
+  <v-container
+    fluid="true"
+    style="background-color: white; height: 100%"
+    class="pa-8">
+    <v-row
+      align="center"
+      justify="left">
       <v-img
-        class="mb-2"
         position="center"
         center
-        height="80px"
-        width="80px"
-        max-width="80px"
-        src="../assets/images/logo.svg"/>
-      <span class="text-h3 font-weight-bold color-primary">BugTracker</span>
+        height="100px"
+        width="66px"
+        max-width="66px"
+        src="../assets/images/logo rect.svg"/>
     </v-row>
-    <div class="text-h5 mt-12">Bienvenido</div>
+    <h3 class="text-h4 mt-10 bold">Bienvenido!</h3>
       <span class="subtitle-1">Inicie session para continuar</span>
       <v-form
         class="text-center mt-8"
@@ -24,11 +27,14 @@
         v-model="email"
         label="Correo"
         required
+        append-icon="mdi-account"
       ></v-text-field>
       <v-text-field
         v-model="password"
         label="Contraseña"
-        type="password"
+        :append-icon="hidePassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="hidePassword ? 'password' : 'text'"
+        @click:append="() => (hidePassword = !hidePassword)"
         required
       ></v-text-field>
       <div class="text-right">
@@ -58,7 +64,8 @@ export default {
   data () {
     return {
       password: '',
-      email: ''
+      email: '',
+      hidePassword: true
     }
   }
 }
