@@ -79,6 +79,9 @@ export default {
       this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.features.getBounds(), {
         maxZoom: this.maxZoom
       })
+    },
+    setView (coordinates) {
+      this.map.setView(coordinates)
     }
   }
 }

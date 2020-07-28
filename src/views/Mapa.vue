@@ -1,6 +1,8 @@
 <template>
   <div style="height: 100%;">
-    <map-component :geojson="geojson"/>
+    <map-component
+      ref="leaflet"
+      :geojson="geojson"/>
     <v-btn
       @click="pointMe()"
       color="primary"
@@ -48,13 +50,12 @@ export default {
   },
   methods: {
     pointMe () {
-      console.log('entra')
       navigator.geolocation.getCurrentPosition(pos => {
-        alert(pos.coords.latitude)
+        this.$refs.leaflet.setView([pos.coords.latitude, pos.coords.longitude])
       }, error => {
         console.log(error)
         // alert(JSON.stringify(error))
-      })
+      }, this.options)
     }
   }
 }
