@@ -20,7 +20,7 @@ export default {
   props: {
     geojson: {
       type: [Array, Object],
-      default: undefined
+      default: () => []
     },
     height: {
       type: String,
@@ -61,7 +61,7 @@ export default {
   watch: {
     geojson: {
       handler (newVal) {
-        if (newVal) {
+        if (newVal.length) {
           this.setGeoJSON(newVal)
         }
       },

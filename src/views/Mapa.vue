@@ -2,6 +2,7 @@
   <div style="height: 100%;">
     <map-component :geojson="geojson"/>
     <v-btn
+      @click="pointMe()"
       color="primary"
       style="bottom: 80px"
       dark
@@ -10,7 +11,7 @@
       right
       fab
      >
-      <v-icon>mdi-camera</v-icon>
+      <v-icon>mdi-crosshairs-gps</v-icon>
     </v-btn>
   </div>
 </template>
@@ -32,13 +33,29 @@ export default {
   },
   data () {
     return {
-      observations: []
+      observations: [],
+      options: {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
     }
   },
   mounted () {
     makeRequest('get', '/observations').then(response => {
       this.observations = response.data
     })
+  },
+  methods: {
+    pointMe () {
+      console.log('entra')
+      navigator.geolocation.getCurrentPosition(pos => {
+        alert(pos.coords.latitude)
+      }, error => {
+        console.log(error)
+        // alert(JSON.stringify(error))
+      })
+    }
   }
 }
 </script>

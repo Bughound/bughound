@@ -1,3 +1,3 @@
 import { apiRequest } from '@/config.js'
 
-export default `${apiRequest.protocol}://${apiRequest.host}:${apiRequest.port}`
+export default `${apiRequest.protocol}://${apiRequest.host}:${apiRequest.port}${apiRequest.path}`

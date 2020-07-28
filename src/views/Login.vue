@@ -13,6 +13,7 @@
         width="66px"
         max-width="66px"
         src="../assets/images/logo rect.svg"/>
+      PlagueFinder
     </v-row>
     <h3 class="text-h4 mt-10 bold">Bienvenido!</h3>
       <span class="subtitle-1">Inicie session para continuar</span>

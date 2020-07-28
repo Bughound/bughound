@@ -1,4 +1,17 @@
 module.exports = {
+  devServer: {
+    https: true,
+    proxy: {
+      '^/api': {
+        target: 'http://localhost:1337/',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api':'' //remove /service/api
+        }
+      }
+    }
+  },
   transpileDependencies: [
     'vuetify'
   ],
