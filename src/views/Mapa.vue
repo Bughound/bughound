@@ -1,5 +1,9 @@
 <template>
   <div style="height: 100%;">
+    <v-tabs fixed-tabs>
+      <v-tab>Mapa</v-tab>
+      <v-tab>Especies</v-tab>
+    </v-tabs>
     <map-component
       ref="leaflet"
       :geojson="geojson"/>
@@ -54,7 +58,6 @@ export default {
         this.$refs.leaflet.setView([pos.coords.latitude, pos.coords.longitude])
       }, error => {
         console.log(error)
-        // alert(JSON.stringify(error))
       }, this.options)
     }
   }

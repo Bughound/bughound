@@ -15,8 +15,13 @@
 
         <v-list-item-content>
           <v-list-item-title v-html="composeScientificName(item)"></v-list-item-title>
+          <v-list-item-subtitle v-text="item.taxon.common_name"></v-list-item-subtitle>
           <v-list-item-subtitle v-html="item.date"></v-list-item-subtitle>
         </v-list-item-content>
+        <v-list-item-action>
+          <v-list-item-action-text>15 min</v-list-item-action-text>
+            <v-icon>mdi-edit</v-icon>
+          </v-list-item-action>
       </v-list-item>
       <v-divider
         :key="index"
