@@ -1,10 +1,6 @@
 <template>
-    <v-list three-line>
+  <v-list three-line>
     <template v-for="(item, index) in observations">
-      <v-divider
-        :key="index"
-      ></v-divider>
-
       <v-list-item
         :key="item.id"
         :to="{ name: 'Observacion', params: { id: item.id } }"

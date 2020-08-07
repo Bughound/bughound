@@ -1,6 +1,8 @@
 <template>
   <div style="height: 100%;">
-    <v-tabs fixed-tabs>
+    <v-tabs
+      grow
+      >
       <v-tab>Mapa</v-tab>
       <v-tab>Especies</v-tab>
     </v-tabs>

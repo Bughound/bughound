@@ -65,13 +65,13 @@ export default {
           this.setGeoJSON(newVal)
         }
       },
-      deep: true,
-      immediate: true
+      deep: true
     }
   },
   mounted () {
     this.map = L.map(this.$refs.leafletMap, this.config).setView([0, 0], 2)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map)
+    this.setGeoJSON(this.geojson)
   },
   methods: {
     setGeoJSON (geojson) {
