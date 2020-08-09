@@ -1,6 +1,7 @@
 const ActionNames = {
   LoadUser: 'loadUser',
-  LoginUser: 'loginUser'
+  LoginUser: 'loginUser',
+  Logout: 'logout'
 }
 
 export default ActionNames

@@ -35,7 +35,9 @@
             <v-list-item-title>Contact</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item
+          link
+          @click="logout">
           <v-list-item-action>
             <v-icon>mdi-logout</v-icon>
           </v-list-item-action>
@@ -63,6 +65,9 @@
 </template>
 
 <script>
+
+import { ActionNames } from '@/store/actions/actions.js'
+
 export default {
   computed: {
     currentRouteName () {
@@ -72,6 +77,12 @@ export default {
   data () {
     return {
       drawer: false
+    }
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch(ActionNames.Logout)
+      this.$router.push({ name: 'Login' })
     }
   }
 }

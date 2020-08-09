@@ -5,6 +5,8 @@ import Login from '../views/Login.vue'
 import Observations from '../views/Observations.vue'
 import Mapa from '../views/Mapa.vue'
 import Observation from '../views/Observation.vue'
+import Register from '../views/Register.vue'
+
 import isAuthenticated from '@/helpers/isAuthenticated.js'
 
 Vue.use(VueRouter)
@@ -25,8 +27,13 @@ const routes = [
     }
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '/',
-    name: 'Index',
+    name: 'Inicio',
     component: Mapa
   },
   {

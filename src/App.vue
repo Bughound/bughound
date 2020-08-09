@@ -19,6 +19,7 @@ import MobileNav from '@/components/MobileNav.vue'
 import AppBar from '@/components/AppBar.vue'
 import { GetterNames } from '@/store/getters/getters'
 import { ActionNames } from '@/store/actions/actions'
+import isAuthenticated from '@/helpers/isAuthenticated.js'
 
 export default {
   components: {
@@ -38,7 +39,9 @@ export default {
     //
   }),
   beforeCreate () {
-    this.$store.dispatch(ActionNames.LoadUser)
+    if (isAuthenticated()) {
+      this.$store.dispatch(ActionNames.LoadUser)
+    }
   }
 }
 </script>
