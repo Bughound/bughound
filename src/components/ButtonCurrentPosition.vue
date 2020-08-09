@@ -27,18 +27,12 @@ export default {
       } else {
         console.log('Available')
       }
-      console.log('entra')
       navigator.geolocation.getCurrentPosition(pos => {
         alert(pos.coords.latitude)
       }, error => {
         console.log(error)
-        // alert(JSON.stringify(error))
       })
     }
   }
 }
 </script>
-
-<style>
-
-</style>

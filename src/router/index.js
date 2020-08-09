@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Observations from '../views/Observations.vue'
 import Mapa from '../views/Mapa.vue'
 import Observation from '../views/Observation.vue'
+import isAuthenticated from '@/helpers/isAuthenticated.js'
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,11 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      if (isAuthenticated()) next()
+      else next()
+    }
   },
   {
     path: '/',

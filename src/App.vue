@@ -1,14 +1,14 @@
 <template>
   <v-app :style="{background: $vuetify.theme.themes[theme].background}">
     <app-bar
-      v-if="isAuthenticated"
+      v-if="getUser"
       app>
     </app-bar>
     <v-main>
         <router-view :key="$route.fullPath"/>
     </v-main>
     <mobile-nav
-      v-if="isAuthenticated"
+      v-if="getUser"
       app/>
   </v-app>
 </template>
@@ -17,7 +17,8 @@
 
 import MobileNav from '@/components/MobileNav.vue'
 import AppBar from '@/components/AppBar.vue'
-import isAuthenticated from '@/helpers/isAuthenticated.js'
+import { GetterNames } from '@/store/getters/getters'
+import { ActionNames } from '@/store/actions/actions'
 
 export default {
   components: {
@@ -29,12 +30,15 @@ export default {
     theme () {
       return (this.$vuetify.theme.dark) ? 'dark' : 'light'
     },
-    isAuthenticated () {
-      return !isAuthenticated()
+    getUser () {
+      return this.$store.getters[GetterNames.GetUser]
     }
   },
   data: () => ({
     //
-  })
+  }),
+  beforeCreate () {
+    this.$store.dispatch(ActionNames.LoadUser)
+  }
 }
 </script>

@@ -7,7 +7,7 @@
       app
     >
       <v-list dense>
-        <v-list-item two-line :class="miniVariant && 'px-0'">
+        <v-list-item two-line>
           <v-list-item-avatar>
             <img src="https://randomuser.me/api/portraits/men/81.jpg">
           </v-list-item-avatar>
@@ -24,7 +24,7 @@
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
+            <v-list-item-title>Revisiones</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link>
@@ -35,6 +35,14 @@
             <v-list-item-title>Contact</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Salir</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -42,7 +50,6 @@
       rounded="false"
       :tile="true"
       color="white"
-      scroll-target="#scrolling-techniques-6"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ currentRouteName }}</v-toolbar-title>

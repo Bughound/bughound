@@ -1,11 +1,9 @@
 <template>
   <v-container
-    fluid="true"
+    :fluid="true"
     style="background-color: white; height: 100%"
     class="pa-8">
-    <v-row
-      align="center"
-      justify="left">
+    <v-row align="center">
       <v-img
         position="center"
         center
@@ -25,17 +23,18 @@
       >
 
       <v-text-field
-        v-model="email"
+        v-model="user.identifier"
         label="Correo"
         required
         append-icon="mdi-account"
       ></v-text-field>
       <v-text-field
-        v-model="password"
+        v-model="user.password"
         label="Contraseña"
         :append-icon="hidePassword ? 'mdi-eye' : 'mdi-eye-off'"
         :type="hidePassword ? 'password' : 'text'"
         @click:append="() => (hidePassword = !hidePassword)"
+        @keydown.enter="login"
         required
       ></v-text-field>
       <div class="text-right">
@@ -50,6 +49,7 @@
         width="100%"
         large
         depressed
+        @click="login"
       >
         Iniciar
       </v-btn>
@@ -61,12 +61,30 @@
 </template>
 <script>
 
+import { ActionNames } from '@/store/actions/actions'
+
 export default {
+  computed: {
+    validateFields () {
+      return this.user.password.length && this.user.identifier.length
+    }
+  },
   data () {
     return {
-      password: '',
-      email: '',
+      user: {
+        password: '',
+        identifier: ''
+      },
       hidePassword: true
+    }
+  },
+  methods: {
+    login () {
+      if (this.validateFields) {
+        this.$store.dispatch(ActionNames.LoginUser, this.user).then(() => {
+          this.$router.push({ name: 'Index' })
+        })
+      }
     }
   }
 }
