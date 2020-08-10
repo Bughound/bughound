@@ -1,15 +1,22 @@
 <template>
-  <div>
-    <video
-      autoplay
-      loop
-      muted
-      width="100%">
-      <source src="../assets/videos/login.mp4" type="video/mp4">
-    </video>
+  <v-container
+    fluid
+    class="ma-0 pa-0 p-fixed">
+    <div class="video-container">
+      <v-overlay
+        :absolute="true"/>
+      <video
+        autoplay
+        loop
+        muted
+        width="100%">
+        <source src="../assets/videos/login.mp4" type="video/mp4">
+      </video>
+    </div>
     <v-container
+      fluid
       class="pa-8">
-      <h3 class="text-h4 bold">Bienvenido!</h3>
+      <h3 class="text-h4 bold">Bienvenido</h3>
       <span class="subtitle-1">Inicie session para continuar</span>
         <v-form
           class="text-center mt-6"
@@ -38,7 +45,7 @@
         </div>
 
         <v-btn
-          class="mt-12 text-center"
+          class="mt-10 text-center"
           color="success"
           max-width="344"
           rounded
@@ -54,7 +61,7 @@
         Nuevo usuario? <router-link :to="{ name: 'Register' }">Registrate</router-link>
       </p>
     </v-container>
-  </div>
+  </v-container>
 </template>
 <script>
 
@@ -86,3 +93,12 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .video-container {
+    video {
+
+      object-fit: fill;
+    }
+    position: relative;
+  }
+</style>

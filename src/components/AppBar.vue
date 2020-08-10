@@ -13,7 +13,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Usuario</v-list-item-title>
+            <v-list-item-title>{{ user.first_name }} {{ user.last_name }}</v-list-item-title>
             <v-list-item-subtitle>Usuario</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -50,8 +50,10 @@
     <v-app-bar
       app
       rounded="false"
-      :tile="true"
       color="white"
+      :flat="true"
+      :outlined="true"
+      :hide-on-scroll="true"
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ currentRouteName }}</v-toolbar-title>
@@ -67,11 +69,15 @@
 <script>
 
 import { ActionNames } from '@/store/actions/actions.js'
+import { GetterNames } from '@/store/getters/getters.js'
 
 export default {
   computed: {
     currentRouteName () {
       return this.$route.name
+    },
+    user () {
+      return this.$store.getters[GetterNames.GetUser]
     }
   },
   data () {
@@ -87,3 +93,9 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .v-toolbar__content {
+    // border-bottom-width: thin;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  }
+</style>

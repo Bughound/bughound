@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Observations from '../views/Observations.vue'
 import Mapa from '../views/Mapa.vue'
 import Observation from '../views/Observation.vue'
+import Identify from '../views/Identify/Identify.vue'
 import Register from '../views/Register.vue'
 
 import isAuthenticated from '@/helpers/isAuthenticated.js'
@@ -15,7 +16,11 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
   },
   {
     path: '/login',
@@ -29,27 +34,52 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
+    beforeEnter: (to, from, next) => {
+      if (isAuthenticated()) next()
+      else next()
+    }
   },
   {
     path: '/',
     name: 'Inicio',
-    component: Mapa
+    component: Mapa,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
   },
   {
     path: '/observations',
     name: 'Observaciones',
-    component: Observations
+    component: Observations,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
   },
   {
     path: '/observations/:id',
     name: 'Observacion',
-    component: Observation
+    component: Observation,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
   },
   {
     path: '/mapa',
     name: 'Mapa',
-    component: Mapa
+    component: Mapa,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
+  },
+  {
+    path: '/identify',
+    name: 'Identificacion',
+    component: Identify
   },
   {
     path: '/about',

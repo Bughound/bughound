@@ -5,11 +5,12 @@
       app>
     </app-bar>
     <v-main>
-        <router-view :key="$route.fullPath"/>
+      <router-view :key="$route.fullPath"/>
     </v-main>
     <mobile-nav
       v-if="getUser"
       app/>
+    <v-footer/>
   </v-app>
 </template>
 
@@ -45,3 +46,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+  .p-fixed {
+    position: fixed;
+  }
+</style>
