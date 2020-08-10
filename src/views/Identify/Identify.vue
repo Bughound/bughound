@@ -13,16 +13,21 @@
       </v-avatar>
     </div>
     <v-row class="mt-15 no-gutters">
-      <v-col align="center">
+      <transition name="fade">
+      <v-col
+        v-if="show"
+        align="center">
         <h3 class="text-h5 font-weight-bold primary--text mt-8">IDENTIFICASTE</h3>
-        <h4 class="text-h4 font-weight-light font-italic mt-8">Dichroplus elongatus</h4>
-        <h4 class="text-h5 font-weight-light">(Tucura)</h4>
+        <h4 class="text-h4 font-weight-light font-italic mt-8">{{ taxon.parent.name }} {{ taxon.name }}</h4>
+        <h4 class="text-h5 font-weight-light">({{ taxon.common_name }})</h4>
         <span class="text-caption">98% de coincidencia</span>
       </v-col>
+      </transition>
     </v-row>
     <v-row class="mt-15 no-gutters">
       <v-col align="center">
         <v-btn
+          v-if="show"
           color="primary"
           rounded
           depressed
@@ -36,22 +41,55 @@
 
 <script>
 export default {
-
+  props: {
+    taxon: {
+      type: Object,
+      default: undefined
+    },
+    prediccion: {
+      type: String,
+      required: true
+    }
+  },
+  data () {
+    return {
+      show: false
+    }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.show = true
+    })
+  }
 }
 </script>
 
 <style>
-  .species-circle {
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    bottom: -25%;
-    border: 10px solid white;
-  }
-  .header-identify {
-    height: 250px;
-    position: relative;
-  }
+
+.species-circle {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: -25%;
+  border: 10px solid white;
+}
+
+.header-identify {
+  height: 250px;
+  position: relative;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: transform 0.5s;
+}
+
+.fade-enter {
+  transform: scale(0)
+}
+
+.fade-leave-to {
+  transform: scale(1.5);
+}
 </style>

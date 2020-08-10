@@ -1,35 +1,42 @@
 <template>
   <div>
-    <span v-if="!cameraPermission">Para poder tomar fotos de sus observaciones necesitamos que autorice la utilización de la camara</span>
-    <camera-component @onPicture="createObservation"/>
+    <camara-component
+      ref="camera"
+      @onPicture="createObservation"/>
   </div>
 </template>
 
 <script>
 
 import CamaraComponent from '@/components/Camera.vue'
-import makeRequest from '@/helpers/makeRequest'
+import { makeRequest } from '@/helpers/makeRequest'
 
 export default {
   components: {
-    CameraComponent
+    CamaraComponent
   },
   data () {
     return {
       cameraPermission: false
     }
   },
-  created () {
-    navigator.permissions.query({ name: 'camera' }).then(result => {
-      this.cameraPermission = result.status === 'granted'
-    })
+  mounted () {
+    this.$refs.camera.openCamera()
   },
   methods: {
-    createObservation () {
+    createObservation (cameraImage) {
+      const formData = new FormData()
       const data = {
-        time: new Date().toLocaleString()
+        taxon: 1,
+        count: 1,
+        date: new Date()
       }
-      makeRequest('post', '/specimen', data)
+
+      formData.append('taxon', 1)
+      formData.append('files.image', cameraImage, cameraImage.name)
+      formData.append('data', JSON.stringify(data))
+
+      makeRequest('post', '/observations', formData)
     }
   }
 }

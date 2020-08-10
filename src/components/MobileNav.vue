@@ -19,9 +19,8 @@
 
     <v-btn
       value="camera"
-      @click="openCamera">
+      :to="{ name: 'Tomar foto' }">
       <v-icon>mdi-camera</v-icon>
-      <camera-component ref="camera"/>
     </v-btn>
 
     <v-btn
@@ -35,20 +34,10 @@
 
 <script>
 
-import CameraComponent from './Camera'
-
 export default {
-  components: {
-    CameraComponent
-  },
   data () {
     return {
       bottomNav: 'recent'
-    }
-  },
-  methods: {
-    openCamera () {
-      this.$refs.camera.openCamera()
     }
   }
 }
