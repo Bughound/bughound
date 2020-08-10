@@ -7,7 +7,6 @@ import Mapa from '../views/Mapa.vue'
 import Observation from '../views/Observation.vue'
 import Identify from '../views/Identify/Identify.vue'
 import Register from '../views/Register.vue'
-import TakePicture from '../views/TakePicture.vue'
 
 import isAuthenticated from '@/helpers/isAuthenticated.js'
 
@@ -76,11 +75,6 @@ const routes = [
       if (!isAuthenticated()) next('/login')
       else next()
     }
-  },
-  {
-    path: '/take_picture',
-    name: 'Tomar foto',
-    component: TakePicture
   },
   {
     path: '/identify',

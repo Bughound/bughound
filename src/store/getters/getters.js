@@ -1,11 +1,14 @@
 import getUser from './getUser'
+import getPredictions from './getPredictions'
 
 const GetterNames = {
-  GetUser: 'getUser'
+  GetUser: 'getUser',
+  GetPredictions: 'getPredictions'
 }
 
 const GetterFunctions = {
-  [GetterNames.GetUser]: getUser
+  [GetterNames.GetUser]: getUser,
+  [GetterNames.GetPredictions]: getPredictions
 }
 
 export {

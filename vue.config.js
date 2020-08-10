@@ -16,7 +16,7 @@ module.exports = {
     'vuetify'
   ],
   pwa: {
-    name: 'BugTrack',
+    name: 'Bughound',
     themeColor: '#4DBA87',
     msTileColor: '#4DBA87',
     appleMobileWebAppCapable: 'yes',

@@ -1,4 +1,5 @@
 const ActionNames = {
+  CreateObservation: 'createObservation',
   LoadUser: 'loadUser',
   LoginUser: 'loginUser',
   Logout: 'logout'

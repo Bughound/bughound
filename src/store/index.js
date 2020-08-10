@@ -11,7 +11,8 @@ const newStore = () => {
   return {
     user: undefined,
     observations: [],
-    notifications: []
+    notifications: [],
+    predictions: []
   }
 }
 

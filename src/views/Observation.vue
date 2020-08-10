@@ -19,8 +19,8 @@
       height="194"
     ></v-img>
 
-    <v-card-text>
-      Avistada por: {{ observation.created_by.name }} {{ observation.created_by.last_name }}
+    <v-card-text v-if="observation.created_by">
+      Avistada por: {{ observation.created_by.first_name }} {{ observation.created_by.last_name }}
     </v-card-text>
   </v-card>
     <v-tabs
@@ -36,6 +36,7 @@
       class="ma-5"
       :taxon="observation.taxon"/>
     <map-component
+      v-if="observation.geojson"
       height="300px"
       :geojson="[observation.geojson]"
       :zoom-animation="false"
@@ -64,8 +65,8 @@ export default {
     return {
       isLoading: false,
       observation: undefined,
-      tabs: ['Informacion', 'Destribucion'],
-      tabIndex: 'Informacion'
+      tabs: ['Informacion', 'Distribucion'],
+      tabIndex: 0
     }
   },
   mounted () {

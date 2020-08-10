@@ -9,7 +9,7 @@
         size="280px"
       >
       <v-img
-        src="@/assets/images/elongatus.jpg"/>
+        :src="imageRoute(predictions[0].taxon.image.formats.medium.url)"/>
       </v-avatar>
     </div>
     <v-row class="mt-15 no-gutters">
@@ -18,9 +18,9 @@
         v-if="show"
         align="center">
         <h3 class="text-h5 font-weight-bold primary--text mt-8">IDENTIFICASTE</h3>
-        <h4 class="text-h4 font-weight-light font-italic mt-8">{{ taxon.parent.name }} {{ taxon.name }}</h4>
-        <h4 class="text-h5 font-weight-light">({{ taxon.common_name }})</h4>
-        <span class="text-caption">98% de coincidencia</span>
+        <h4 class="text-h4 font-weight-light font-italic mt-8">{{ predictions[0].taxon.parent.name }} {{ predictions[0].taxon.name }}</h4>
+        <h4 class="text-h5 font-weight-light">({{ predictions[0].taxon.common_name }})</h4>
+        <span class="text-caption">{{ predictions[0].confidence }}% de coincidencia</span>
       </v-col>
       </transition>
     </v-row>
@@ -40,15 +40,14 @@
 </template>
 
 <script>
+
+import { GetterNames } from '@/store/getters/getters'
+import apiRoute from '@/helpers/apiRoute'
+
 export default {
-  props: {
-    taxon: {
-      type: Object,
-      default: undefined
-    },
-    prediccion: {
-      type: String,
-      required: true
+  computed: {
+    predictions () {
+      return this.$store.getters[GetterNames.GetPredictions]
     }
   },
   data () {
@@ -60,6 +59,9 @@ export default {
     this.$nextTick(() => {
       this.show = true
     })
+  },
+  methods: {
+    imageRoute: (path) => `${apiRoute}${path}`
   }
 }
 </script>

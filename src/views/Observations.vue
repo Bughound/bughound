@@ -3,7 +3,7 @@
     fluid
     class="pa-0">
     <v-list three-line>
-      <template v-for="(item, index) in observations">
+      <template v-for="(item) in observations">
         <v-list-item
           :key="item.id"
           :to="{ name: 'Observacion', params: { id: item.id } }"
@@ -22,9 +22,7 @@
               <v-icon>mdi-edit</v-icon>
             </v-list-item-action>
         </v-list-item>
-        <v-divider
-          :key="index"
-        ></v-divider>
+        <v-divider :key="`${item.id}-divider`"/>
       </template>
     </v-list>
   </v-container>
