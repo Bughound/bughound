@@ -9,7 +9,7 @@
       <v-list dense>
         <v-list-item two-line>
           <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/men/81.jpg">
+            <v-img :src="imageRoute(user.avatar.formats.thumbnail.url)"/>
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -70,6 +70,7 @@
 
 import { ActionNames } from '@/store/actions/actions.js'
 import { GetterNames } from '@/store/getters/getters.js'
+import apiRoute from '@/helpers/apiRoute'
 
 export default {
   computed: {
@@ -89,13 +90,13 @@ export default {
     logout () {
       this.$store.dispatch(ActionNames.Logout)
       this.$router.push({ name: 'Login' })
-    }
+    },
+    imageRoute: (path) => `${apiRoute}${path}`
   }
 }
 </script>
 <style lang="scss">
   .v-toolbar__content {
-    // border-bottom-width: thin;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
   }
 </style>

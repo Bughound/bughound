@@ -60,7 +60,7 @@
 
 import CameraComponent from '@/components/Camera.vue'
 import ParseDMS from '@/helpers/parseDMS.js'
-// import ActionNames from '@/store/actions/actionNames'
+import ActionNames from '@/store/actions/actionNames'
 import makeGeoJSONFeature from '@/helpers/makeGeoJSONFeature.js'
 
 export default {
@@ -70,29 +70,32 @@ export default {
   data () {
     return {
       bottomNav: 'recent',
-      isSaving: false
+      isSaving: false,
+      options: {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      }
     }
   },
   methods: {
     openCamera () {
       this.$refs.camera.openCamera()
     },
-    processImage (cameraImage) {
+    async processImage (cameraImage) {
       const formData = new FormData()
-      const coordinates = this.getGPSCoordinates(cameraImage.exif)
-      const data = { count: 1, date: new Date() }
+      this.isSaving = true
 
-      formData.append('taxon', 1)
+      const data = { count: 1, date: new Date(), geojson: await this.createGeoJSON(cameraImage.exif) }
       formData.append('files.image', cameraImage.image, cameraImage.image.name)
       formData.append('data', JSON.stringify(data))
       this.isSaving = true
-      if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
-        console.log(makeGeoJSONFeature(coordinates.latitude, coordinates.longitude))
-      }
-      // this.$store.dispatch(ActionNames.CreateObservation, formData).then(() => {
-      //  this.isSaving = false
-      //  this.$router.push({ name: 'Identificacion' })
-      // })
+      this.$store.dispatch(ActionNames.CreateObservation, formData).then(() => {
+        this.isSaving = false
+        this.$router.push({ name: 'Identificacion' })
+      })
+
+      console.log(data)
     },
     parseEXIFCoordinate (GPSCoordinate) {
       return GPSCoordinate ? `${GPSCoordinate[0]}° ${GPSCoordinate[1]}' ${GPSCoordinate[2]}"` : undefined
@@ -102,6 +105,21 @@ export default {
         latitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLatitude) + exif.GPSLatitudeRef),
         longitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLongitude) + exif.GPSLongitudeRef)
       }
+    },
+    createGeoJSON (exif) {
+      return new Promise((resolve, reject) => {
+        const coordinates = this.getGPSCoordinates(exif)
+
+        if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
+          resolve(makeGeoJSONFeature(coordinates.latitude, coordinates.longitude))
+        } else {
+          navigator.geolocation.getCurrentPosition(pos => {
+            resolve(makeGeoJSONFeature(pos.coords.latitude, pos.coords.longitude))
+          }, error => {
+            reject(error)
+          }, this.options)
+        }
+      })
     }
   }
 }

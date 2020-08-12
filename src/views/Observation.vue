@@ -4,7 +4,9 @@
     class="mx-auto"
   >
     <v-list-item>
-      <v-list-item-avatar color="grey"></v-list-item-avatar>
+      <v-list-item-avatar color="grey">
+        <v-img :src="imageRoute(observation.taxon.image.formats.thumbnail.url)"/>
+      </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title
           class="headline"
