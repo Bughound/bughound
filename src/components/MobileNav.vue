@@ -59,7 +59,9 @@
 <script>
 
 import CameraComponent from '@/components/Camera.vue'
-import ActionNames from '@/store/actions/actionNames'
+import ParseDMS from '@/helpers/parseDMS.js'
+// import ActionNames from '@/store/actions/actionNames'
+import makeGeoJSONFeature from '@/helpers/makeGeoJSONFeature.js'
 
 export default {
   components: {
@@ -77,19 +79,29 @@ export default {
     },
     processImage (cameraImage) {
       const formData = new FormData()
-      const data = {
-        taxon: 1,
-        count: 1,
-        date: new Date()
-      }
+      const coordinates = this.getGPSCoordinates(cameraImage.exif)
+      const data = { count: 1, date: new Date() }
+
       formData.append('taxon', 1)
-      formData.append('files.image', cameraImage, cameraImage.name)
+      formData.append('files.image', cameraImage.image, cameraImage.image.name)
       formData.append('data', JSON.stringify(data))
       this.isSaving = true
-      this.$store.dispatch(ActionNames.CreateObservation, formData).then(() => {
-        this.isSaving = false
-        this.$router.push({ name: 'Identificacion' })
-      })
+      if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
+        console.log(makeGeoJSONFeature(coordinates.latitude, coordinates.longitude))
+      }
+      // this.$store.dispatch(ActionNames.CreateObservation, formData).then(() => {
+      //  this.isSaving = false
+      //  this.$router.push({ name: 'Identificacion' })
+      // })
+    },
+    parseEXIFCoordinate (GPSCoordinate) {
+      return GPSCoordinate ? `${GPSCoordinate[0]}° ${GPSCoordinate[1]}' ${GPSCoordinate[2]}"` : undefined
+    },
+    getGPSCoordinates (exif) {
+      return {
+        latitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLatitude) + exif.GPSLatitudeRef),
+        longitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLongitude) + exif.GPSLongitudeRef)
+      }
     }
   }
 }

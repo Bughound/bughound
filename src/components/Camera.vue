@@ -8,6 +8,9 @@
 </template>
 
 <script>
+
+import EXIF from 'exif-js'
+
 export default {
   methods: {
     openCamera () {
@@ -17,7 +20,14 @@ export default {
       if (this.$el.files.length === 0) {
         return
       }
-      this.$emit('onPicture', this.$el.files[0])
+
+      EXIF.getData(this.$el.files[0], () => {
+        var allMetaData = EXIF.getAllTags(this.$el.files[0])
+        this.$emit('onPicture', {
+          image: this.$el.files[0],
+          exif: allMetaData
+        })
+      })
     }
   }
 }
