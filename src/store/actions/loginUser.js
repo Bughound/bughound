@@ -5,7 +5,7 @@ import setToken from '@/helpers/setToken.js'
 export default ({ commit }, data) => {
   return new Promise((resolve, reject) => {
     LoginUser(data).then(response => {
-      commit(MutationNames.SetUser, response.data)
+      commit(MutationNames.SetUser, response.data.user)
       setToken(response.data.jwt)
       resolve(data)
     }, (error) => {

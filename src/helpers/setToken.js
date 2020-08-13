@@ -1,3 +1,7 @@
 export default (value) => {
-  localStorage.setItem('authtoken', value)
+  if (value) {
+    localStorage.setItem('authtoken', value)
+  } else {
+    localStorage.removeItem('authtoken')
+  }
 }

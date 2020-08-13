@@ -13,7 +13,7 @@
         <source src="../assets/videos/login.mp4" type="video/mp4">
       </video>
     </div>
-    <v-container
+    <div
       fluid
       class="pa-8">
       <h3 class="text-h4 bold">Bienvenido</h3>
@@ -60,7 +60,7 @@
       <p class="subtitle-1 text-center mt-12">
         Nuevo usuario? <router-link :to="{ name: 'Register' }">Registrate</router-link>
       </p>
-    </v-container>
+    </div>
   </v-container>
 </template>
 <script>

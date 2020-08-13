@@ -27,7 +27,7 @@ const routes = [
     name: 'Login',
     component: Login,
     beforeEnter: (to, from, next) => {
-      if (isAuthenticated()) next()
+      if (isAuthenticated()) next('/observations')
       else next()
     }
   },
@@ -36,7 +36,7 @@ const routes = [
     name: 'Register',
     component: Register,
     beforeEnter: (to, from, next) => {
-      if (isAuthenticated()) next()
+      if (isAuthenticated()) next('/observations')
       else next()
     }
   },
@@ -79,7 +79,11 @@ const routes = [
   {
     path: '/identify',
     name: 'Identificacion',
-    component: Identify
+    component: Identify,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
   },
   {
     path: '/about',

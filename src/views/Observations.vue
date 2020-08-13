@@ -2,7 +2,7 @@
   <v-container
     fluid
     class="pa-0">
-    <v-list three-line>
+    <v-list two-line>
       <template v-for="(item) in observations">
         <v-list-item
           :key="item.id"
@@ -15,10 +15,9 @@
           <v-list-item-content>
             <v-list-item-title v-html="composeScientificName(item)"></v-list-item-title>
             <v-list-item-subtitle v-text="item.taxon.common_name"></v-list-item-subtitle>
-            <v-list-item-subtitle v-html="item.date"></v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-            <v-list-item-action-text>15 min</v-list-item-action-text>
+            <v-list-item-action-text>{{ displayDate(item.created_at) }}</v-list-item-action-text>
               <v-icon>mdi-edit</v-icon>
             </v-list-item-action>
         </v-list-item>
@@ -32,6 +31,7 @@
 
 import { makeRequest } from '@/helpers/makeRequest'
 import apiRoute from '@/helpers/apiRoute'
+import CreatedAgo from '@/helpers/createdAgo.js'
 
 export default {
   computed: {
@@ -57,7 +57,14 @@ export default {
     composeScientificName (observation) {
       return `${observation.parent.name} ${observation.taxon.name}`
     },
-    imageRoute: (path) => `${apiRoute}${path}`
+    displayDate (date) {
+      const time = Object.values(this.createdAgo(date))
+      const labels = ['dias', 'horas', 'minutos', 'segundos']
+      const index = time.findIndex(item => item > 0)
+      return `Hace ${time[index]} ${labels[index]}`
+    },
+    imageRoute: (path) => `${apiRoute}${path}`,
+    createdAgo: CreatedAgo
   }
 }
 </script>

@@ -1,49 +1,52 @@
 <template>
-  <div v-if="observation">
-  <v-card
-    class="mx-auto"
-  >
-    <v-list-item>
-      <v-list-item-avatar color="grey">
-        <v-img :src="imageRoute(observation.taxon.image.formats.thumbnail.url)"/>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title
-          class="headline"
-          v-html="composeScientificName(observation)"
-        />
-        <v-list-item-subtitle>{{ observation.taxon.common_name }}</v-list-item-subtitle>
-      </v-list-item-content>
-    </v-list-item>
+  <v-container
+    fluid
+    v-if="observation"
+    class="pa-0">
+    <v-card
+      class="mx-auto"
+    >
+      <v-list-item>
+        <v-list-item-avatar color="grey">
+          <v-img :src="imageRoute(observation.taxon.image.formats.thumbnail.url)"/>
+        </v-list-item-avatar>
+        <v-list-item-content>
+          <v-list-item-title
+            class="headline"
+            v-html="composeScientificName(observation)"
+          />
+          <v-list-item-subtitle>{{ observation.taxon.common_name }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
 
-    <v-img
-      :src="imageRoute(observation.image.formats.medium.url)"
-      height="194"
-    ></v-img>
+      <v-img
+        :src="imageRoute(observation.image.url)"
+        height="200"
+      ></v-img>
 
-    <v-card-text v-if="observation.created_by">
-      Avistada por: {{ observation.created_by.first_name }} {{ observation.created_by.last_name }}
-    </v-card-text>
-  </v-card>
-    <v-tabs
-      grow
-      v-model="tabIndex">
-      <v-tab
-        v-for="tab in tabs"
-        :key="tab">{{ tab }}
-      </v-tab>
-    </v-tabs>
-    <component
-      :is="componentView"
-      class="ma-5"
-      :taxon="observation.taxon"/>
-    <map-component
-      v-if="observation.geojson"
-      height="300px"
-      :geojson="[observation.geojson]"
-      :zoom-animation="false"
-      :max-zoom="12"/>
-  </div>
+      <v-card-text v-if="observation.created_by">
+        Avistada por: {{ observation.created_by.first_name }} {{ observation.created_by.last_name }}
+      </v-card-text>
+    </v-card>
+      <v-tabs
+        grow
+        v-model="tabIndex">
+        <v-tab
+          v-for="tab in tabs"
+          :key="tab">{{ tab }}
+        </v-tab>
+      </v-tabs>
+      <component
+        :is="componentView"
+        class="ma-5"
+        :taxon="observation.taxon"/>
+      <map-component
+        v-if="observation.geojson"
+        height="300px"
+        :geojson="[observation.geojson]"
+        :zoom-animation="false"
+        :max-zoom="12"/>
+  </v-container>
 </template>
 
 <script>
@@ -78,6 +81,7 @@ export default {
         observation.parent = parentResponse.data
         this.observation = observation
         this.isLoading = false
+        this.$vuetify.goTo(0)
       })
     })
   },

@@ -1,5 +1,8 @@
 <template>
-  <div style="height: 100%;">
+  <v-container
+    fluid
+    fill-height
+    class="pa-0">
     <v-tabs
       grow
       >
@@ -21,7 +24,7 @@
      >
       <v-icon>mdi-crosshairs-gps</v-icon>
     </v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>

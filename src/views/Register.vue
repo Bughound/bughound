@@ -1,13 +1,19 @@
 <template>
-  <div>
-    <video
-      autoplay
-      loop
-      muted
-      width="100%">
-      <source src="../assets/videos/login.mp4" type="video/mp4">
-    </video>
-    <v-container
+  <v-container
+    fluid
+    class="ma-0 pa-0 p-fixed">
+    <div class="video-container">
+      <v-overlay
+        :absolute="true"/>
+      <video
+        autoplay
+        loop
+        muted
+        width="100%">
+        <source src="../assets/videos/login.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div
       class="pa-8">
       <!--
       <v-row align="center">
@@ -84,8 +90,8 @@
           Registrarse
         </v-btn>
       </v-form>
-    </v-container>
-  </div>
+    </div>
+  </v-container>
 </template>
 <script>
 
