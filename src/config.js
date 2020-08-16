@@ -4,7 +4,7 @@ const apiRequest = {
   host: '192.168.0.210',
   path: '/api',
   port: '8080',
-  protocol: 'https'
+  protocol: 'http'
 }
 
 export {

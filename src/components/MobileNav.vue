@@ -62,6 +62,9 @@ import CameraComponent from '@/components/Camera.vue'
 import ParseDMS from '@/helpers/parseDMS.js'
 import ActionNames from '@/store/actions/actionNames'
 import makeGeoJSONFeature from '@/helpers/makeGeoJSONFeature.js'
+import { Plugins } from '@capacitor/core'
+
+const { Geolocation } = Plugins
 
 export default {
   components: {
@@ -84,8 +87,6 @@ export default {
     },
     async processImage (cameraImage) {
       const formData = new FormData()
-      this.isSaving = true
-
       const data = { count: 1, date: new Date(), geojson: await this.createGeoJSON(cameraImage.exif) }
       formData.append('files.image', cameraImage.image, cameraImage.image.name)
       formData.append('data', JSON.stringify(data))
@@ -109,11 +110,11 @@ export default {
     createGeoJSON (exif) {
       return new Promise((resolve, reject) => {
         const coordinates = this.getGPSCoordinates(exif)
-
         if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
           resolve(makeGeoJSONFeature(coordinates.latitude, coordinates.longitude))
         } else {
-          navigator.geolocation.getCurrentPosition(pos => {
+          Geolocation.getCurrentPosition(pos => {
+            alert(JSON.stringify(pos))
             resolve(makeGeoJSONFeature(pos.coords.latitude, pos.coords.longitude))
           }, error => {
             reject(error)

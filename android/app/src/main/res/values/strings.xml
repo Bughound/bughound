@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BugHound</string>
+    <string name="title_activity_main">BugHound</string>
+    <string name="package_name">org.vue.bughound</string>
+    <string name="custom_url_scheme">org.vue.bughound</string>
+</resources>
