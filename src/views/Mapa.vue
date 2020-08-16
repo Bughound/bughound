@@ -31,6 +31,9 @@
 
 import MapComponent from '@/components/Map.vue'
 import { makeRequest } from '@/helpers/makeRequest'
+import { Plugins } from '@capacitor/core'
+
+const { Geolocation } = Plugins
 
 export default {
   name: 'Mapa',
@@ -58,12 +61,9 @@ export default {
     })
   },
   methods: {
-    pointMe () {
-      navigator.geolocation.getCurrentPosition(pos => {
-        this.$refs.leaflet.setView([pos.coords.latitude, pos.coords.longitude])
-      }, error => {
-        console.log(error)
-      }, this.options)
+    async pointMe () {
+      const coordinates = await Geolocation.getCurrentPosition(this.options)
+      this.$refs.leaflet.setView([coordinates.coords.latitude, coordinates.coords.longitude])
     }
   }
 }

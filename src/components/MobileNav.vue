@@ -107,20 +107,14 @@ export default {
         longitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLongitude) + exif.GPSLongitudeRef)
       }
     },
-    createGeoJSON (exif) {
-      return new Promise((resolve, reject) => {
-        const coordinates = this.getGPSCoordinates(exif)
-        if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
-          resolve(makeGeoJSONFeature(coordinates.latitude, coordinates.longitude))
-        } else {
-          Geolocation.getCurrentPosition(pos => {
-            alert(JSON.stringify(pos))
-            resolve(makeGeoJSONFeature(pos.coords.latitude, pos.coords.longitude))
-          }, error => {
-            reject(error)
-          }, this.options)
-        }
-      })
+    async createGeoJSON (exif) {
+      const coordinates = this.getGPSCoordinates(exif)
+      if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
+        return makeGeoJSONFeature(coordinates.latitude, coordinates.longitude)
+      } else {
+        const coordinates = await Geolocation.getCurrentPosition(this.options)
+        return makeGeoJSONFeature(coordinates.coords.latitude, coordinates.coords.longitude)
+      }
     }
   }
 }
