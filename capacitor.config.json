@@ -3,6 +3,20 @@
   "appName":"BugHound",
   "bundledWebRuntime":false,
   "webDir":"dist",
-  "linuxAndroidStudioPath": "/snap/android-studio/91/android-studio/bin/studio.sh"
+  "linuxAndroidStudioPath": "/snap/android-studio/91/android-studio/bin/studio.sh",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffffff",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "androidSpinnerStyle": "large",
+      "iosSpinnerStyle": "small",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
 }
 
