@@ -19,7 +19,9 @@
         <span class="text-h6 font-weight-light">{{ taxon.common_name }}</span>
       </div>
     </div>
-    <navigation-bar class="navbar-position"/>
+    <navigation-bar
+      :levels="menuImportance"
+      class="navbar-position"/>
   </v-container>
 </template>
 
@@ -33,17 +35,29 @@ export default {
   components: {
     NavigationBar
   },
+  computed: {
+    menuImportance () {
+      return Object.fromEntries(this.taxon.importances.map(item => {
+        return [item.importance_group.type, item.level]
+      }))
+    }
+  },
   data () {
     return {
       taxon: undefined,
-      isLoading: false
+      isLoading: false,
+      importanceGroups: []
     }
   },
-  mounted () {
+  async mounted () {
+    this.importanceGroups = (await makeRequest('get', '/importance-groups')).data
+
     makeRequest('get', `/taxons/${this.$route.params.id}`).then(response => {
       this.taxon = response.data
-
       this.$vuetify.goTo(0)
+      this.taxon.importances.forEach((item, index) => {
+        this.taxon.importances[index].importance_group = this.importanceGroups.find(group => group.id === item.importance_group)
+      })
     })
   },
   methods: {

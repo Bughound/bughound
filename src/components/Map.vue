@@ -16,6 +16,12 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 })
 
+const BugIcon = L.divIcon({
+  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small primary"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
+  iconSize: [20, 20],
+  className: 'myDivIcon'
+})
+
 export default {
   props: {
     geojson: {
@@ -75,13 +81,27 @@ export default {
   },
   methods: {
     setGeoJSON (geojson) {
-      this.features = L.geoJSON(geojson).addTo(this.map)
+      this.features = L.geoJSON(geojson, {
+        onEachFeature: this.onEachFeature
+      }).addTo(this.map)
       this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.features.getBounds(), {
         maxZoom: this.maxZoom
       })
     },
     setView (coordinates) {
       this.map.setView(coordinates)
+    },
+    onEachFeature (feature, layer) {
+      layer.setIcon(BugIcon)
+      if (feature.properties) {
+        if (feature.properties.popupContent) {
+          layer.bindPopup(feature.properties.popupContent)
+        }
+        if (feature.properties.importance) {
+          const icono = BugIcon
+          layer.setIcon(icono)
+        }
+      }
     }
   }
 }
