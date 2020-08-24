@@ -28,6 +28,7 @@
       <v-col align="center">
         <v-btn
           v-if="show"
+          :to="{ name: 'Taxon', params: { id: predictions[0].taxon.id } }"
           color="primary"
           rounded
           depressed

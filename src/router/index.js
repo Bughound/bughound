@@ -7,6 +7,7 @@ import Mapa from '../views/Mapa.vue'
 import Observation from '../views/Observation.vue'
 import Identify from '../views/Identify/Identify.vue'
 import Register from '../views/Register.vue'
+import Taxon from '../views/Taxon/Main.vue'
 
 import isAuthenticated from '@/helpers/isAuthenticated.js'
 
@@ -62,6 +63,15 @@ const routes = [
     path: '/observations/:id',
     name: 'Observacion',
     component: Observation,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
+  },
+  {
+    path: '/taxons/:id',
+    name: 'Taxon',
+    component: Taxon,
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) next('/login')
       else next()
