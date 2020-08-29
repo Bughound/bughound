@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import { Plugins } from '@capacitor/core'
+import '@capacitor-community/camera-preview'
+
 const { SplashScreen } = Plugins
 
 Vue.config.productionTip = false

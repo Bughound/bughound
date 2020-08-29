@@ -9,6 +9,9 @@ Vue.use(Vuex)
 
 const newStore = () => {
   return {
+    settings: {
+      cameraActive: false
+    },
     user: undefined,
     observations: [],
     notifications: [],

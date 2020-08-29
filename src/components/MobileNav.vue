@@ -21,9 +21,6 @@
       value="camera"
       @click="openCamera">
       <v-icon>mdi-camera</v-icon>
-      <camera-component
-        ref="camera"
-        @onPicture="processImage"/>
     </v-btn>
 
     <v-btn
@@ -32,89 +29,22 @@
       <v-icon>mdi-map-marker</v-icon>
     </v-btn>
   </v-bottom-navigation>
-  <v-dialog
-    color="white"
-    v-model="isSaving" fullscreen hide-overlay transition="dialog-bottom-transition">
-    <v-container
-    class="white"
-      fill-height
-      fluid>
-      <v-row align="center"
-        justify="center">
-        <v-col align="center">
-          <v-progress-circular
-            :width="7"
-            :size="100"
-            color="primary mb-15"
-            indeterminate
-          ></v-progress-circular>
-          <h3 class="text-h4 mt-15 font-weight-light">Identificando especie</h3>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-dialog>
 </div>
 </template>
 
 <script>
 
-import CameraComponent from '@/components/Camera.vue'
-import ParseDMS from '@/helpers/parseDMS.js'
-import ActionNames from '@/store/actions/actionNames'
-import makeGeoJSONFeature from '@/helpers/makeGeoJSONFeature.js'
-import { Plugins } from '@capacitor/core'
-
-const { Geolocation } = Plugins
+import { ActionNames } from '@/store/actions/actions'
 
 export default {
-  components: {
-    CameraComponent
+  methods: {
+    openCamera () {
+      this.$store.dispatch(ActionNames.ActivateCamera, true)
+    }
   },
   data () {
     return {
-      bottomNav: 'recent',
-      isSaving: false,
-      options: {
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0
-      }
-    }
-  },
-  methods: {
-    openCamera () {
-      this.$refs.camera.openCamera()
-    },
-    async processImage (cameraImage) {
-      const formData = new FormData()
-      const data = { count: 1, date: new Date(), geojson: await this.createGeoJSON(cameraImage.exif) }
-      formData.append('files.image', cameraImage.image, cameraImage.image.name)
-      formData.append('data', JSON.stringify(data))
-      this.isSaving = true
-      this.$store.dispatch(ActionNames.CreateObservation, formData).then(() => {
-        this.isSaving = false
-        this.$router.push({ name: 'Identificacion' })
-      })
-
-      console.log(data)
-    },
-    parseEXIFCoordinate (GPSCoordinate) {
-      return GPSCoordinate ? `${GPSCoordinate[0]}° ${GPSCoordinate[1]}' ${GPSCoordinate[2]}"` : undefined
-    },
-    getGPSCoordinates (exif) {
-      return {
-        latitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLatitude) + exif.GPSLatitudeRef),
-        longitude: ParseDMS(this.parseEXIFCoordinate(exif.GPSLongitude) + exif.GPSLongitudeRef)
-      }
-    },
-    async createGeoJSON (exif) {
-      const coordinates = this.getGPSCoordinates(exif)
-      if (!(isNaN(coordinates.latitude) && isNaN(coordinates.longitude))) {
-        return makeGeoJSONFeature(coordinates.latitude, coordinates.longitude)
-      } else {
-        const coordinates = await Geolocation.getCurrentPosition(this.options)
-        return makeGeoJSONFeature(coordinates.coords.latitude, coordinates.coords.longitude)
-      }
+      buttonNav: undefined
     }
   }
 }
