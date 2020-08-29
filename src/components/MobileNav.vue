@@ -3,30 +3,39 @@
   <v-bottom-navigation
     app
     grow
-    dark
     v-model="bottomNav"
+    color="primary"
   >
     <v-btn
       value="Home">
-      <v-icon>mdi-home</v-icon>
+      <v-icon>fa-home</v-icon>
     </v-btn>
 
     <v-btn
       :to="{ name: 'Observaciones' }"
       value="Recent">
-      <v-icon>mdi-file-find</v-icon>
+      <v-icon>fa-images</v-icon>
     </v-btn>
 
     <v-btn
+      fab
+      depressed
+      class="camera-button elevation-4"
       value="camera"
       @click="openCamera">
-      <v-icon>mdi-camera</v-icon>
+      <v-icon color="white">fa-camera</v-icon>
     </v-btn>
 
     <v-btn
       :to="{ name: 'Mapa' }"
       value="Map">
-      <v-icon>mdi-map-marker</v-icon>
+      <v-icon>fa-map-marked-alt</v-icon>
+    </v-btn>
+
+    <v-btn
+      :to="{ name: 'Zonas' }"
+      value="Zones">
+      <v-icon>fa-map-marker-alt</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </div>
@@ -52,6 +61,20 @@ export default {
 
 <style>
   .v-item-group.v-bottom-navigation .v-btn.v-size--default {
-     height: inherit;
+    height: inherit;
+  }
+  .camera-button {
+    position: absolute;
+    top: -50%;
+    border-radius: 50% !important;
+    border: 4px solid white !important;
+    background-color: #219653 !important;
+    height: 60px !important;
+    width: 60px !important;
+    min-width: 70px !important;
+    max-width: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+    color: white !important;
   }
 </style>

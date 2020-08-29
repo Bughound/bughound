@@ -2,13 +2,7 @@
   <v-container
     fluid
     fill-height
-    class="pa-0">
-    <v-tabs
-      grow
-      >
-      <v-tab>Mapa</v-tab>
-      <v-tab>Especies</v-tab>
-    </v-tabs>
+    class="pa-0 ma-0 map-container">
     <map-component
       ref="leaflet"
       :geojson="geojson"/>
@@ -68,3 +62,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+.map-container {
+  height: calc(100% + 12px)
+}
+</style>

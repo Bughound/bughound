@@ -1,19 +1,20 @@
 <template>
   <div>
     <div class="overlay">
-        <div id="cameraPreview" class="cameraPreview">
-          <div
-            class="close-button"
-            @click="closeCamera">
-            <i class="fas fa-chevron-left"></i>
-          </div>
-          <span class="text-information">Posicione el insecto dentro del recuadro</span>
-          <div
-            @click="takePicture"
-            class="shutter-button">
-            <i class="fas fa-camera"></i>
-          </div>
+      <div class="camera-frame"/>
+      <div id="cameraPreview" class="cameraPreview">
+        <div
+          class="close-button"
+          @click="closeCamera">
+          <i class="fas fa-chevron-left"></i>
         </div>
+        <span class="text-information">Posicione el insecto dentro del recuadro</span>
+        <div
+          @click="takePicture"
+          class="shutter-button">
+          <i class="fas fa-camera"></i>
+        </div>
+      </div>
     </div>
 
     <v-dialog
@@ -90,6 +91,7 @@ export default {
       this.$store.dispatch(ActionNames.ActivateCamera, false)
     },
     async takePicture () {
+      this.isSaving = true
       const result = await CameraPreview.capture()
       const base64PictureData = result.value
       const dataUrlPictureData = `data:text/plain;base64,${base64PictureData}`
@@ -101,7 +103,6 @@ export default {
       const data = { count: 1, date: new Date(), geojson: await this.createGeoJSON(cameraImage) }
       formData.append('files.image', cameraImage, 'species')
       formData.append('data', JSON.stringify(data))
-      this.isSaving = true
       this.$store.dispatch(ActionNames.CreateObservation, formData).then(() => {
         this.isSaving = false
         this.$store.dispatch(ActionNames.ActivateCamera, false)
@@ -156,7 +157,7 @@ export default {
   line-height: 55px;
   top: 20px;
   left: 20px;
-  position: absolute; /*it can be fixed too*/
+  position: absolute;
   margin: auto;
   z-index:2;
   i {
@@ -164,25 +165,51 @@ export default {
   }
 }
 
+.camera-frame {
+  background:
+    linear-gradient(to right, white 4px, transparent 4px) 0 0,
+    linear-gradient(to right, white 4px, transparent 4px) 0 100%,
+    linear-gradient(to left, white 4px, transparent 4px) 100% 0,
+    linear-gradient(to left, white 4px, transparent 4px) 100% 100%,
+    linear-gradient(to bottom, white 4px, transparent 4px) 0 0,
+    linear-gradient(to bottom, white 4px, transparent 4px) 100% 0,
+    linear-gradient(to top, white 4px, transparent 4px) 0 100%,
+    linear-gradient(to top, white 4px, transparent 4px) 100% 100%;
+
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  background-color: transparent;
+  width: 300px;
+  height: 300px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0px;
+  right: 0px;
+  position: absolute;
+  margin: auto;
+}
+
 .text-information {
-  position: absolute; /*it can be fixed too*/
+  position: absolute;
   margin: 0 auto;
+  left: 0px;  right: 0px;
   bottom: 100px;
   color: white;
-  width: 100%;
+  width: 90%;
   text-align: center;
   font-size: 20px;
   text-shadow: 0px 3px 2px rgba(0, 0, 0, 0.4);
 }
 
 .shutter-button {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: #219653;
   border: 4px solid white;
-  vertical-align: middle;
-  text-align: center;
   color: white;
   font-size: 28px;
-  line-height: 55px;
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -191,7 +218,10 @@ export default {
   position: absolute; /*it can be fixed too*/
   margin: auto;
   z-index:2;
-  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  i {
+    margin: auto;
+  }
 }
 html, body, .ion-app, .ion-content {
   background-color: transparent;

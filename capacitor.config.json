@@ -1,8 +1,8 @@
 {
-  "appId":"org.vue.bughound",
-  "appName":"BugHound",
-  "bundledWebRuntime":false,
-  "webDir":"dist",
+  "appId": "org.vue.bughound",
+  "appName": "BugHound",
+  "bundledWebRuntime": false,
+  "webDir": "/home/josecito/Projects/bug_tracker/dist",
   "linuxAndroidStudioPath": "/snap/android-studio/91/android-studio/bin/studio.sh",
   "plugins": {
     "SplashScreen": {
@@ -19,4 +19,3 @@
     }
   }
 }
-
