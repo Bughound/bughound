@@ -5,10 +5,14 @@
           <div
             class="close-button"
             @click="closeCamera">
+            <i class="fas fa-chevron-left"></i>
           </div>
+          <span class="text-information">Posicione el insecto dentro del recuadro</span>
           <div
             @click="takePicture"
-            class="shutter-button"></div>
+            class="shutter-button">
+            <i class="fas fa-camera"></i>
+          </div>
         </div>
     </div>
 
@@ -131,7 +135,7 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="scss">
 .overlay {
   position: absolute;
   width: 100vw;
@@ -145,31 +149,49 @@ export default {
 }
 
 .close-button {
-  background-size: 60px 60px;
-  background-color: white;
-  border: 2px solid black;
+  text-align: center;
+  color: white;
   border-radius: 50%;
-  width: 55px;
-  height: 55px;
+  font-size: 44px;
+  line-height: 55px;
   top: 20px;
   left: 20px;
   position: absolute; /*it can be fixed too*/
   margin: auto;
   z-index:2;
+  i {
+    text-shadow: 0px 3px 2px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.text-information {
+  position: absolute; /*it can be fixed too*/
+  margin: 0 auto;
+  bottom: 100px;
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-size: 20px;
+  text-shadow: 0px 3px 2px rgba(0, 0, 0, 0.4);
 }
 
 .shutter-button {
-  background-size: 60px 60px;
-  background-color: white;
-  border: 2px solid black;
+  background-color: #219653;
+  border: 4px solid white;
+  vertical-align: middle;
+  text-align: center;
+  color: white;
+  font-size: 28px;
+  line-height: 55px;
   border-radius: 50%;
-  width: 55px;
-  height: 55px;
+  width: 60px;
+  height: 60px;
   bottom: 20px;
   left: 0px;  right: 0px;
   position: absolute; /*it can be fixed too*/
   margin: auto;
   z-index:2;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)
 }
 html, body, .ion-app, .ion-content {
   background-color: transparent;
