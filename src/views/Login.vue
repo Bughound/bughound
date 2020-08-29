@@ -86,7 +86,7 @@ export default {
     login () {
       if (this.validateFields) {
         this.$store.dispatch(ActionNames.LoginUser, this.user).then(() => {
-          this.$router.push({ name: 'Inicio' })
+          this.$router.push({ name: 'Mapa' })
         })
       }
     }

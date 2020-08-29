@@ -49,6 +49,7 @@ export default {
   beforeCreate () {
     if (isAuthenticated()) {
       this.$store.dispatch(ActionNames.LoadUser)
+      this.$router.push({ name: 'Mapa' })
     }
   }
 }

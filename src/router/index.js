@@ -8,6 +8,7 @@ import Observation from '../views/Observation.vue'
 import Identify from '../views/Identify/Identify.vue'
 import Register from '../views/Register.vue'
 import Taxon from '../views/Taxon/Main.vue'
+import Zones from '../views/Zones/Main.vue'
 
 import isAuthenticated from '@/helpers/isAuthenticated.js'
 
@@ -42,15 +43,6 @@ const routes = [
     }
   },
   {
-    path: '/',
-    name: 'Inicio',
-    component: Mapa,
-    beforeEnter: (to, from, next) => {
-      if (!isAuthenticated()) next('/login')
-      else next()
-    }
-  },
-  {
     path: '/observations',
     name: 'Observaciones',
     component: Observations,
@@ -72,6 +64,15 @@ const routes = [
     path: '/taxons/:id',
     name: 'Taxon',
     component: Taxon,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
+  },
+  {
+    path: '/zones',
+    name: 'Zonas',
+    component: Zones,
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) next('/login')
       else next()

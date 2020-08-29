@@ -1,9 +1,7 @@
 <template>
-<div>
   <v-bottom-navigation
     app
     grow
-    v-model="bottomNav"
     color="primary"
   >
     <v-btn
@@ -13,7 +11,7 @@
 
     <v-btn
       :to="{ name: 'Observaciones' }"
-      value="Recent">
+      value="Observaciones">
       <v-icon>fa-images</v-icon>
     </v-btn>
 
@@ -28,17 +26,14 @@
 
     <v-btn
       :to="{ name: 'Mapa' }"
-      value="Map">
+      value="Mapa">
       <v-icon>fa-map-marked-alt</v-icon>
     </v-btn>
 
-    <v-btn
-      :to="{ name: 'Zonas' }"
-      value="Zones">
+    <v-btn :to="{ name: 'Zonas' }">
       <v-icon>fa-map-marker-alt</v-icon>
     </v-btn>
   </v-bottom-navigation>
-</div>
 </template>
 
 <script>
@@ -49,11 +44,14 @@ export default {
   methods: {
     openCamera () {
       this.$store.dispatch(ActionNames.ActivateCamera, true)
+    },
+    routeName () {
+      return this.$route.name
     }
   },
   data () {
     return {
-      buttonNav: undefined
+      buttonNav: 2
     }
   }
 }
