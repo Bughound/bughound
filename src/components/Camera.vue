@@ -211,9 +211,9 @@ export default {
   color: white;
   font-size: 28px;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  bottom: 20px;
+  width: 70px;
+  height: 70px;
+  bottom: 14px;
   left: 0px;  right: 0px;
   position: absolute; /*it can be fixed too*/
   margin: auto;

@@ -50,6 +50,8 @@ export default {
     if (isAuthenticated()) {
       this.$store.dispatch(ActionNames.LoadUser)
       this.$router.push({ name: 'Mapa' })
+    } else {
+      this.$router.push({ name: 'Login' })
     }
   }
 }

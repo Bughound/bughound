@@ -4,7 +4,7 @@
     class="pa-0">
     <div class="species-header">
       <v-img
-        height="340px"
+        height="220px"
         :src="imageRoute(taxon.image.url)"/>
       <div class="species-description ml-6">
         <v-chip
@@ -21,32 +21,45 @@
     </div>
     <navigation-bar
       :levels="menuImportance"
-      class="navbar-position"/>
+      class="navbar-position"
+      @selected="setView"/>
+    <component
+      v-if="componentExist"
+      :is="componentView"/>
   </v-container>
 </template>
 
 <script>
 
 import { makeRequest } from '@/helpers/makeRequest.js'
+import SanitaryComponent from './Sanitary.vue'
 import apiRoute from '@/helpers/apiRoute.js'
 import NavigationBar from './NavBar.vue'
 
 export default {
   components: {
-    NavigationBar
+    NavigationBar,
+    SanitaryComponent
   },
   computed: {
     menuImportance () {
       return Object.fromEntries(this.taxon.importances.map(item => {
         return [item.importance_group.type, item.level]
       }))
+    },
+    componentExist () {
+      return this.$options.components[`${this.view}Component`]
+    },
+    componentView () {
+      return `${this.view}Component`
     }
   },
   data () {
     return {
       taxon: undefined,
       isLoading: false,
-      importanceGroups: []
+      importanceGroups: [],
+      view: undefined
     }
   },
   async mounted () {
@@ -64,6 +77,9 @@ export default {
     imageRoute: (path) => `${apiRoute}${path}`,
     composeScientificName (observation) {
       return `${observation.parent.name} ${observation.taxon.name}`
+    },
+    setView (view) {
+      this.view = view
     }
   }
 }

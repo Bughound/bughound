@@ -9,6 +9,7 @@
         dark
         small
         depressed
+        @click="selectView(button)"
         :color="setColor(button)">
         <v-icon dark>{{ button.icon }}</v-icon>
       </v-btn>
@@ -23,6 +24,20 @@ export default {
     levels: {
       type: Object,
       default: () => {}
+    },
+    value: {
+      type: String,
+      default: undefined
+    }
+  },
+  computed: {
+    selectedView: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        this.$emit('input', value)
+      }
     }
   },
   data () {
@@ -34,11 +49,11 @@ export default {
         },
         {
           icon: 'fa-seedling',
-          type: 'economica'
+          type: 'Economic'
         },
         {
           icon: 'fa-heartbeat',
-          type: 'sanitaria'
+          type: 'Sanitary'
         },
         {
           icon: 'fa-globe-americas'
@@ -55,6 +70,9 @@ export default {
   methods: {
     setColor (button) {
       return button.type ? this.levels[button.type] ? this.classLevel[this.levels[button.type]] : 'primary' : 'primary'
+    },
+    selectView (button) {
+      this.$emit('selected', button.type)
     }
   }
 }
