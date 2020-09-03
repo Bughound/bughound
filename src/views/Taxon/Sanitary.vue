@@ -2,10 +2,10 @@
   <v-container
     fluid>
     <div class="d-flex justify-space-between mb-2">
-      <h4 class="text-h6">Venenosa (Neurotixico)</h4>
+      <h4 class="text-h6">{{ pathogen.type }} ({{ pathogen.name }})</h4>
       <v-chip
         class="mb-2 white--text"
-        color="orange"
+        :color="importanceColor()"
         rounded
         small
       >
@@ -15,20 +15,17 @@
     <v-divider/>
     <h5 class="text-h6 mt-2">SINTOMAS</h5>
     <v-row>
-      <v-col cols="auto">
+      <v-col
+        v-for="(chunk, index) in symptoms"
+        :key="index"
+        cols="auto">
         <ul>
-          <li>Escalofríos</li>
-          <li>Fiebre</li>
-          <li>Náuseas</li>
-          <li>Vomitos</li>
-        </ul>
-      </v-col>
-      <v-col cols="auto">
-        <ul>
-          <li>Agitación</li>
-          <li>Dolor de cabeza</li>
-          <li>Sudoración</li>
-          <li>Presión alta</li>
+          <li
+            v-for="(symptom, index) in chunk"
+            :key="index"
+            class="text-body-1">
+            {{ symptom }}
+          </li>
         </ul>
       </v-col>
     </v-row>
@@ -56,8 +53,43 @@
 </template>
 
 <script>
-export default {
 
+import { GetPathogen } from '@/request/resources.js'
+import { arrayChunk } from '@/helpers/arrays.js'
+import importanceColors from './const/importanceColor'
+
+export default {
+  props: {
+    taxon: {
+      type: Object,
+      required: true
+    },
+    importance: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    symptoms () {
+      return this.pathogen ? arrayChunk(this.pathogen.symptoms.map(item => item.description).sort(), 4) : []
+    }
+  },
+  data () {
+    return {
+      pathogen: undefined
+    }
+  },
+  async mounted () {
+    if (this.taxon.pathogen) {
+      const response = await (GetPathogen(this.taxon.pathogen.id))
+      this.pathogen = response.data
+    }
+  },
+  methods: {
+    importanceColor () {
+      return this.importance.Sanitary ? importanceColors[this.importance.Sanitary] : 'primary'
+    }
+  }
 }
 </script>
 

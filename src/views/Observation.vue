@@ -6,7 +6,7 @@
     <v-card
       class="mx-auto"
     >
-      <v-list-item :to="{ name: 'Taxon', params: { id: observation.taxon.id } }">
+      <v-list-item :to="{ name: 'Especie', params: { id: observation.taxon.id } }">
         <v-list-item-avatar color="grey">
           <v-img :src="imageRoute(observation.taxon.image.formats.thumbnail.url)"/>
         </v-list-item-avatar>

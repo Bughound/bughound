@@ -7,14 +7,6 @@
         height="220px"
         :src="imageRoute(taxon.image.url)"/>
       <div class="species-description ml-6">
-        <v-chip
-          class="mb-2"
-          color="primary"
-          small
-          label
-        >
-          ARAÑA
-        </v-chip>
         <span class="text-h5 d-block font-italic">{{ taxon.parent.name }} {{ taxon.name }}</span>
         <span class="text-h6 font-weight-light">{{ taxon.common_name }}</span>
       </div>
@@ -22,9 +14,11 @@
     <navigation-bar
       :levels="menuImportance"
       class="navbar-position"
-      @selected="setView"/>
+      v-model="view"/>
     <component
       v-if="componentExist"
+      :taxon="taxon"
+      :importance="menuImportance"
       :is="componentView"/>
   </v-container>
 </template>
@@ -71,6 +65,7 @@ export default {
       this.taxon.importances.forEach((item, index) => {
         this.taxon.importances[index].importance_group = this.importanceGroups.find(group => group.id === item.importance_group)
       })
+      this.view = Object.keys(this.menuImportance)[Object.values(this.menuImportance).indexOf(Math.max(...Object.values(this.menuImportance)))]
     })
   },
   methods: {

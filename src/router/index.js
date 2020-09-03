@@ -62,7 +62,7 @@ const routes = [
   },
   {
     path: '/taxons/:id',
-    name: 'Taxon',
+    name: 'Especie',
     component: Taxon,
     beforeEnter: (to, from, next) => {
       if (!isAuthenticated()) next('/login')

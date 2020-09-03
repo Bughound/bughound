@@ -38,6 +38,13 @@
         </v-row>
       </v-container>
     </v-dialog>
+
+    <tutorial-component
+      v-if="showTutorial"
+      :image="image"
+      title="Identifique insectos"
+      text="Apunte con la camara y posicione al insecto dentro del recuadro desde una posición dorsal o lateral del mismo para obtener un mejor resultado"
+      @accept="showTutorial = false"/>
   </div>
 </template>
 
@@ -47,6 +54,9 @@ import ParseDMS from '@/helpers/parseDMS.js'
 import makeGeoJSONFeature from '@/helpers/makeGeoJSONFeature.js'
 import { Plugins } from '@capacitor/core'
 import { ActionNames } from '@/store/actions/actions'
+import TutorialComponent from '@/components/Tutorial.vue'
+
+import InsectImage from '@/assets/images/identify/identify_insect.svg'
 
 const { Geolocation } = Plugins
 const { CameraPreview } = Plugins
@@ -69,10 +79,15 @@ function dataURItoBlob (dataURI) {
 }
 
 export default {
+  components: {
+    TutorialComponent
+  },
   data () {
     return {
       bottomNav: 'recent',
       isSaving: false,
+      showTutorial: true,
+      image: InsectImage,
       options: {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -94,7 +109,7 @@ export default {
       this.isSaving = true
       const result = await CameraPreview.capture()
       const base64PictureData = result.value
-      const dataUrlPictureData = `data:text/plain;base64,${base64PictureData}`
+      const dataUrlPictureData = `data:image/jpeg;base64,${base64PictureData}`
       CameraPreview.stop()
       this.processImage(dataURItoBlob(dataUrlPictureData))
     },
@@ -159,7 +174,6 @@ export default {
   left: 20px;
   position: absolute;
   margin: auto;
-  z-index:2;
   i {
     text-shadow: 0px 3px 2px rgba(0, 0, 0, 0.4);
   }
@@ -217,7 +231,6 @@ export default {
   left: 0px;  right: 0px;
   position: absolute; /*it can be fixed too*/
   margin: auto;
-  z-index:2;
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   i {
     margin: auto;

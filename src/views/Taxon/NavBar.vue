@@ -1,19 +1,19 @@
 <template>
   <div class="d-flex flex-row justify-space-around ml-4 mr-4">
     <template v-for="(button, index) in buttons">
-      <div
-        class="taxon-button-nav"
-        :key="index">
       <v-btn
         fab
         dark
-        small
+        :key="index"
+        :width="50"
+        :height="50"
+        :class="{ selected: isSelected(button) }"
+        :style="buttonStyle"
         depressed
         @click="selectView(button)"
         :color="setColor(button)">
         <v-icon dark>{{ button.icon }}</v-icon>
       </v-btn>
-      </div>
     </template>
   </div>
 </template>
@@ -42,10 +42,14 @@ export default {
   },
   data () {
     return {
+      buttonStyle: {
+        border: '4px solid white !important'
+      },
       classLevel: ['primary', 'black', 'orange', 'red'],
       buttons: [
         {
-          icon: 'fa-bug'
+          icon: 'fa-bug',
+          type: 'Information'
         },
         {
           icon: 'fa-seedling',
@@ -56,31 +60,36 @@ export default {
           type: 'Sanitary'
         },
         {
-          icon: 'fa-globe-americas'
+          icon: 'fa-globe-americas',
+          type: 'Habitat'
         },
         {
-          icon: 'fa-map-marker-alt'
+          icon: 'fa-map-marker-alt',
+          type: 'Distribution'
         },
         {
-          icon: 'fa-chart-bar'
+          icon: 'fa-chart-bar',
+          type: 'Statistics'
         }
       ]
     }
   },
   methods: {
     setColor (button) {
-      return button.type ? this.levels[button.type] ? this.classLevel[this.levels[button.type]] : 'primary' : 'primary'
+      return `${button.type ? this.levels[button.type] ? this.classLevel[this.levels[button.type]] : 'primary' : 'primary'} ${button.type === this.value ? 'lighten-2' : ''}`
+    },
+    isSelected (button) {
+      return this.value === button.type
     },
     selectView (button) {
-      this.$emit('selected', button.type)
+      this.$emit('input', button.type)
     }
   }
 }
 </script>
-
-<style>
-.taxon-button-nav {
-  border: 4px solid white !important;
-  border-radius: 50%;
+<style scoped>
+.selected {
+  transform: scale(1.3);
 }
+
 </style>
