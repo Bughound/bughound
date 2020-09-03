@@ -32,7 +32,7 @@
     <h5 class="text-h6">RECOMENDACIONES</h5>
     <v-row>
       <v-col>
-        <span>Mantenga la calma. Alterarse demasiado o moverse mucho aumentarán la circulación del veneno en la sangre</span>
+        <span v-html="pathogen.recomendation"/>
       </v-col>
     </v-row>
     <v-row>
@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     symptoms () {
-      return this.pathogen ? arrayChunk(this.pathogen.symptoms.map(item => item.description).sort(), 4) : []
+      return this.pathogen ? arrayChunk(this.pathogen.symptoms.map(item => item.description).sort(), 6) : []
     }
   },
   data () {
