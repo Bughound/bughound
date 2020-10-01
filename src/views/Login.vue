@@ -17,7 +17,7 @@
       fluid
       class="pa-8">
       <h3 class="text-h4 bold">Bienvenido</h3>
-      <span class="subtitle-1">Inicie session para continuar</span>
+      <span class="subtitle-1">Inicie sesión para continuar</span>
         <v-form
           class="text-center mt-6"
           xs

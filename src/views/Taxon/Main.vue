@@ -1,6 +1,7 @@
 <template>
   <v-container
     fluid
+    style="height: 100%;"
     class="pa-0">
     <div class="species-header">
       <v-img
@@ -27,12 +28,16 @@
 
 import { makeRequest } from '@/helpers/makeRequest.js'
 import SanitaryComponent from './Sanitary.vue'
+import DistributionComponent from './Distribution'
+import StatisticsComponent from './Statistics'
 import apiRoute from '@/helpers/apiRoute.js'
 import NavigationBar from './NavBar.vue'
 
 export default {
   components: {
     NavigationBar,
+    DistributionComponent,
+    StatisticsComponent,
     SanitaryComponent
   },
   computed: {

@@ -10,10 +10,13 @@ const RegisterUser = (data) => makeRequest('post', '/auth/local/register', data)
 
 const LoginUser = (data) => makeRequest('post', '/auth/local', data)
 
+const TaxonStatistics = (id) => makeRequest('get', `/taxons/${id}/statistics`)
+
 export {
   CreateObservation,
   GetPathogen,
   GetUser,
+  TaxonStatistics,
   RegisterUser,
   LoginUser
 }

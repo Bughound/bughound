@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row justify-space-around ml-4 mr-4">
+  <div class="d-flex flex-row justify-space-around ml-4 mr-4 navbar-taxon-view">
     <template v-for="(button, index) in buttons">
       <v-btn
         fab
@@ -88,6 +88,9 @@ export default {
 }
 </script>
 <style scoped>
+.navbar-taxon-view {
+  z-index: 3000;
+}
 .selected {
   transform: scale(1.3);
 }
