@@ -10,7 +10,8 @@ Vue.use(Vuex)
 const newStore = () => {
   return {
     settings: {
-      cameraActive: false
+      cameraActive: false,
+      showMenuPanel: false
     },
     user: undefined,
     observations: [],

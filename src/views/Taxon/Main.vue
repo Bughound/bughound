@@ -5,7 +5,7 @@
     class="pa-0">
     <div class="species-header">
       <v-img
-        height="220px"
+        height="250px"
         :src="imageRoute(taxon.image.url)"/>
       <div class="species-description ml-6">
         <span class="text-h5 d-block font-italic">{{ taxon.parent.name }} {{ taxon.name }}</span>
@@ -91,7 +91,7 @@ export default {
 }
 .navbar-position {
   position: relative;
-  margin-top: -24px;
+  margin-top: -26px;
 }
 .species-description {
   position: absolute;

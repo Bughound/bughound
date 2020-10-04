@@ -8,8 +8,8 @@
         :width="50"
         :height="50"
         :class="{ selected: isSelected(button) }"
-        :style="buttonStyle"
-        depressed
+        :style="buttonStyle(noImportance(button))"
+        :disabled="noImportance(button)"
         @click="selectView(button)"
         :color="setColor(button)">
         <v-icon dark>{{ button.icon }}</v-icon>
@@ -42,9 +42,6 @@ export default {
   },
   data () {
     return {
-      buttonStyle: {
-        border: '4px solid white !important'
-      },
       classLevel: ['primary', 'black', 'orange', 'red'],
       buttons: [
         {
@@ -53,11 +50,13 @@ export default {
         },
         {
           icon: 'fa-seedling',
-          type: 'Economic'
+          type: 'Economic',
+          importance_group: 'Economic'
         },
         {
           icon: 'fa-heartbeat',
-          type: 'Sanitary'
+          type: 'Sanitary',
+          importance_group: 'Sanitary'
         },
         {
           icon: 'fa-globe-americas',
@@ -83,16 +82,31 @@ export default {
     },
     selectView (button) {
       this.$emit('input', button.type)
+    },
+    buttonStyle (disabled) {
+      return {
+        border: '4px solid white !important',
+        backgroundColor: disabled ? 'rgba(0,0,0,0.7) !important' : undefined
+      }
+    },
+    noImportance (button) {
+      return button.importance_group ? this.levels[button.type] === undefined : false
     }
   }
 }
 </script>
-<style scoped>
+<style lang="scss">
 .navbar-taxon-view {
-  z-index: 3000;
-}
-.selected {
-  transform: scale(1.3);
+  z-index: 3;
+
+  .selected {
+    transform: scale(1.3);
+  }
+  .theme--dark {
+    .v-btn--disabled {
+      background-color: gray !important;
+    }
+  }
 }
 
 </style>

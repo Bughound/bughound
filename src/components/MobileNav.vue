@@ -5,8 +5,8 @@
     color="primary"
   >
     <v-btn
-      value="Home">
-      <v-icon>fa-home</v-icon>
+      v-model="settings.showMenuPanel">
+      <v-icon>fa-bars</v-icon>
     </v-btn>
 
     <v-btn
@@ -39,8 +39,20 @@
 <script>
 
 import { ActionNames } from '@/store/actions/actions'
+import { MutationNames } from '@/store/mutations/mutations'
+import { GetterNames } from '@/store/getters/getters'
 
 export default {
+  computed: {
+    settings: {
+      get () {
+        return this.$store.getters[GetterNames.GetSettings]
+      },
+      set (value) {
+        this.$store.commit(MutationNames.SetSettings, value)
+      }
+    }
+  },
   methods: {
     openCamera () {
       this.$store.dispatch(ActionNames.ActivateCamera, true)

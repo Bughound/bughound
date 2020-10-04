@@ -2,9 +2,12 @@
   <v-app :style="{background: 'transparent'}">
     <app-bar
       v-show="!cameraActive"
-      v-if="getUser"
+      v-if="false"
       app>
     </app-bar>
+    <menu-panel
+      v-show="!cameraActive"
+    />
     <v-main v-show="!cameraActive">
       <router-view :key="$route.fullPath"/>
     </v-main>
@@ -24,9 +27,11 @@ import { GetterNames } from '@/store/getters/getters'
 import { ActionNames } from '@/store/actions/actions'
 import isAuthenticated from '@/helpers/isAuthenticated.js'
 import CameraComponent from '@/components/Camera.vue'
+import MenuPanel from '@/components/MenuPanel.vue'
 
 export default {
   components: {
+    MenuPanel,
     MobileNav,
     AppBar,
     CameraComponent
@@ -43,13 +48,15 @@ export default {
       return this.$store.getters[GetterNames.GetSettings].cameraActive
     }
   },
-  data: () => ({
-    //
-  }),
   beforeCreate () {
     if (isAuthenticated()) {
-      this.$store.dispatch(ActionNames.LoadUser)
-      this.$router.push({ name: 'Mapa' })
+      this.$store.dispatch(ActionNames.LoadUser).catch(error => {
+        console.log(error.response)
+        if (error.response.status === 401) {
+          localStorage.removeItem('authtoken')
+          this.$router.push({ name: 'Login' })
+        }
+      })
     } else {
       this.$router.push({ name: 'Login' })
     }

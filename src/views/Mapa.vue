@@ -49,15 +49,22 @@ export default {
       }
     }
   },
-  mounted () {
-    makeRequest('get', '/observations').then(response => {
+  async mounted () {
+    const coordinates = await Geolocation.getCurrentPosition(this.options)
+    makeRequest('get', '/observations', {
+      params: {
+        lat: coordinates.coords.latitude,
+        long: coordinates.coords.longitude,
+        distance: 1
+      }
+    }).then(response => {
       this.observations = response.data
     })
   },
   methods: {
     async pointMe () {
       const coordinates = await Geolocation.getCurrentPosition(this.options)
-      this.$refs.leaflet.setView([coordinates.coords.latitude, coordinates.coords.longitude])
+      this.$refs.leaflet.setView(Object.values(coordinates.coords))
     }
   }
 }

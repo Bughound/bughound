@@ -88,6 +88,15 @@ const routes = [
     }
   },
   {
+    path: '/',
+    name: 'Mapa',
+    component: Mapa,
+    beforeEnter: (to, from, next) => {
+      if (!isAuthenticated()) next('/login')
+      else next()
+    }
+  },
+  {
     path: '/identify',
     name: 'Identificacion',
     component: Identify,
