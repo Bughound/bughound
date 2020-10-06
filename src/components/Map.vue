@@ -8,6 +8,9 @@
 
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+import 'leaflet.markercluster/dist/leaflet.markercluster.js'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -17,8 +20,20 @@ L.Icon.Default.mergeOptions({
 })
 
 const BugIcon = L.divIcon({
-  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small primary"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
-  iconSize: [20, 20],
+  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small primary blob red"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
+  iconSize: [40, 40],
+  className: 'myDivIcon'
+})
+
+// const BugOrangeIcon = L.divIcon({
+//  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small blob orange"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
+//  iconSize: [40, 40],
+//  className: 'myDivIcon'
+// })
+
+const PositionIcon = L.divIcon({
+  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small blue blob "><i class="v-icon notranslate fa fa-street-view theme--dark"></i></div>',
+  iconSize: [40, 40],
   className: 'myDivIcon'
 })
 
@@ -43,6 +58,10 @@ export default {
     zoomAnimation: {
       type: Boolean,
       default: true
+    },
+    clusters: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -61,6 +80,10 @@ export default {
       config: {
         attributionControl: false,
         zoomControl: false
+      },
+      currentPosition: {
+        marker: undefined,
+        radius: undefined
       }
     }
   },
@@ -83,10 +106,39 @@ export default {
     setGeoJSON (geojson) {
       this.features = L.geoJSON(geojson, {
         onEachFeature: this.onEachFeature
-      }).addTo(this.map)
+      })
+      if (this.clusters) {
+        const markers = L.markerClusterGroup()
+        markers.addLayers(this.features)
+        this.map.addLayer(markers)
+      } else {
+        this.map.addLayer(this.features)
+      }
+    },
+    setUserLocation (coordinates, meters = 5) {
+      if (this.currentPosition.marker) {
+        this.currentPosition.marker.setLatLng(coordinates)
+        this.currentPosition.radius.setLatLng(coordinates)
+      } else {
+        this.currentPosition.marker = L.marker(coordinates).setIcon(PositionIcon)
+        this.currentPosition.radius = L.circle(coordinates, {
+          color: '#2196F3',
+          weight: 1,
+          fillColor: '#2196F3',
+          fillOpacity: 0.1,
+          radius: meters * 1000
+        })
+        this.currentPosition.marker.addTo(this.map)
+        this.currentPosition.radius.addTo(this.map)
+      }
+    },
+    zoomToPoints () {
       this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.features.getBounds(), {
         maxZoom: this.maxZoom
       })
+    },
+    zoomToUserLocation () {
+      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.currentPosition.radius.getBounds())
     },
     setView (coordinates) {
       this.map.setView(coordinates)
@@ -107,5 +159,68 @@ export default {
 }
 </script>
 <style lang="scss">
+
+.blob.red {
+    background: rgba(255, 82, 82, 1);
+    box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+    animation: pulse-red 2s infinite;
+}
+
+.blob.blue {
+    background: #2196F3;
+    box-shadow: 0 0 0 0 #2196F3;
+    animation: pulse-blue 2s infinite;
+}
+
+.blob.orange {
+  background: rgba(255, 183, 77, 1);
+  box-shadow: 0 0 0 0 rgba(255, 183, 77, 1);
+  animation: pulse-orange 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+}
+
+@keyframes pulse-orange {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 183, 77, 0.7);
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px  rgba(255, 183, 77, 0);
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0  rgba(255, 183, 77, 0);
+    }
+}
+
+@keyframes pulse-blue {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(33, 150, 243, 0.7)
+    }
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(33, 150, 243, 0)
+    }
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(33, 150, 243, 0)
+    }
+}
 
 </style>

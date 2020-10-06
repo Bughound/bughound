@@ -5,6 +5,8 @@
     class="pa-0 ma-0 map-container">
     <map-component
       ref="leaflet"
+      clusters
+      :zoomAnimation="false"
       :geojson="geojson"/>
     <v-btn
       @click="pointMe()"
@@ -46,7 +48,8 @@ export default {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
-      }
+      },
+      distance: 5
     }
   },
   async mounted () {
@@ -55,16 +58,19 @@ export default {
       params: {
         lat: coordinates.coords.latitude,
         long: coordinates.coords.longitude,
-        distance: 1
+        distance: this.distance
       }
     }).then(response => {
+      this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance)
+      this.$refs.leaflet.zoomToUserLocation()
       this.observations = response.data
     })
   },
   methods: {
     async pointMe () {
       const coordinates = await Geolocation.getCurrentPosition(this.options)
-      this.$refs.leaflet.setView(Object.values(coordinates.coords))
+      this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance)
+      this.$refs.leaflet.zoomToUserLocation()
     }
   }
 }
