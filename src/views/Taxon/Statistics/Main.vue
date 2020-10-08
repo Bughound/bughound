@@ -3,9 +3,7 @@
     fluid>
     <h4 class="text-h6">Avistamientos</h4>
     <v-divider/>
-    <line-chart
-      :chart-data="datacollection"
-      :options="chartConfig"/>
+    <line-chart :chart-data="dataCollection"/>
   </v-container>
 </template>
 
@@ -31,11 +29,7 @@ export default {
       months: Months.map(m => m.charAt(0)),
       count: [],
       temp: {},
-      datacollection: null,
-      chartConfig: {
-        borderWidth: 3,
-        fill: false
-      }
+      dataCollection: null
     }
   },
   mounted () {
@@ -47,21 +41,21 @@ export default {
   },
   methods: {
     fillData (count) {
-      this.datacollection = {
+      this.dataCollection = {
         labels: this.months,
         datasets: ((years = Object.keys(count)) => years.map((year, index) => {
           return {
             label: year,
             fill: false,
-            borderWidth: 2,
+            borderWidth: 3,
             data: count[year],
-            borderColor: this.getRandomColor(3, years)
+            borderColor: this.getRandomColor((index + 1), years)
           }
         }))()
       }
     },
     getRandomColor (index, years) {
-      return `hsl(${60 * index}, ${mapRange(index, 0, years.length, 10, 30)}%, 40%)`
+      return `hsl(${50 * index}, ${mapRange(index, 0, years.length, 40, 180)}%, 30%)`
     }
   }
 }
