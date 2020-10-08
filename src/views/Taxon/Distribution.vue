@@ -29,6 +29,9 @@ export default {
   mounted () {
     makeRequest('get', '/observations', { params: { 'taxon.id': this.taxon.id } }).then(response => {
       this.geojson = response.data.map(observation => observation.geojson).filter(json => json)
+      this.$nextTick(() => {
+        this.$refs.leaflet.zoomToPoints()
+      })
     })
   }
 }

@@ -29,7 +29,7 @@
 import { makeRequest } from '@/helpers/makeRequest.js'
 import SanitaryComponent from './Sanitary.vue'
 import DistributionComponent from './Distribution'
-import StatisticsComponent from './Statistics'
+import StatisticsComponent from './Statistics/Main'
 import apiRoute from '@/helpers/apiRoute.js'
 import NavigationBar from './NavBar.vue'
 

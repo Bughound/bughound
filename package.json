@@ -19,6 +19,7 @@
     "@capacitor/cli": "^2.4.0",
     "@capacitor/core": "^2.4.0",
     "axios": "^0.19.2",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "exif-js": "^2.3.0",
     "leaflet": "^1.6.0",
@@ -26,6 +27,7 @@
     "parse-dms": "0.0.3",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.1",
     "vue-router": "^3.4.2",
     "vuetify": "^2.3.8",
     "vuex": "^3.5.1"
