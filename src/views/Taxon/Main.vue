@@ -9,7 +9,7 @@
         :src="imageRoute(taxon.image.url)"/>
       <div class="species-description ml-6">
         <span class="text-h5 d-block font-italic">{{ taxon.parent.name }} {{ taxon.name }}</span>
-        <span class="text-h6 font-weight-light">{{ taxon.common_name }}</span>
+        <span class="text-h6"><b>{{ taxon.common_name }}</b></span>
       </div>
     </div>
     <navigation-bar
@@ -30,6 +30,8 @@ import { makeRequest } from '@/helpers/makeRequest.js'
 import SanitaryComponent from './Sanitary.vue'
 import DistributionComponent from './Distribution'
 import StatisticsComponent from './Statistics/Main'
+import HabitatComponent from './Habitat'
+import HabitComponent from './Habit'
 import apiRoute from '@/helpers/apiRoute.js'
 import NavigationBar from './NavBar.vue'
 
@@ -38,7 +40,9 @@ export default {
     NavigationBar,
     DistributionComponent,
     StatisticsComponent,
-    SanitaryComponent
+    SanitaryComponent,
+    HabitatComponent,
+    HabitComponent
   },
   computed: {
     menuImportance () {

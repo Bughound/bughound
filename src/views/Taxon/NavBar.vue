@@ -46,7 +46,7 @@ export default {
       buttons: [
         {
           icon: 'fa-bug',
-          type: 'Information'
+          type: 'Habit'
         },
         {
           icon: 'fa-seedling',
@@ -59,7 +59,7 @@ export default {
           importance_group: 'Sanitary'
         },
         {
-          icon: 'fa-globe-americas',
+          icon: 'fa-cloud-sun',
           type: 'Habitat'
         },
         {

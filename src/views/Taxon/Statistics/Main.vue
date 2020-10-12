@@ -26,7 +26,7 @@ export default {
   },
   data () {
     return {
-      months: Months.map(m => m.charAt(0)),
+      months: Months,
       count: [],
       temp: {},
       dataCollection: null
