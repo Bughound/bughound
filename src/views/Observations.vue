@@ -29,7 +29,14 @@
           </v-list-item-content>
           <v-list-item-action>
             <v-list-item-action-text>{{ displayDate(item.created_at) }}</v-list-item-action-text>
-              <v-icon>mdi-edit</v-icon>
+              <v-icon
+                v-if="item.taxon.sanitary"
+                small
+                :color="importanceColor[item.taxon.sanitary]">fa-heartbeat</v-icon>
+              <v-icon
+                v-if="item.taxon.economic"
+                small
+                :color="importanceColor[item.taxon.economic]">fa-seedling</v-icon>
             </v-list-item-action>
         </v-list-item>
         <v-divider :key="`${item.id}-divider`"/>
@@ -55,10 +62,13 @@
 import { makeRequest } from '@/helpers/makeRequest'
 import apiRoute from '@/helpers/apiRoute'
 import CreatedAgo from '@/helpers/createdAgo.js'
+import ImportanceColor from '@/views/Taxon/const/importanceColor.js'
 
 export default {
   computed: {
-
+    importanceColor () {
+      return ImportanceColor
+    }
   },
   data () {
     return {
