@@ -1,7 +1,9 @@
 <template>
   <v-container
     fluid>
-    <span class="text-h5">Hábito y comportamiento</span>
+    <div class="d-inline-flex align-center mb-2">
+      <span class="text-h5 mr-2">Comportamiento</span>
+    </div>
     <v-divider/>
 
   </v-container>

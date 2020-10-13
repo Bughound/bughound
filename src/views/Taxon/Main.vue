@@ -14,6 +14,7 @@
     </div>
     <navigation-bar
       :levels="menuImportance"
+      :taxon="taxon"
       class="navbar-position ml-4 mr-4"
       v-model="view"/>
     <component
@@ -47,8 +48,8 @@ export default {
   },
   computed: {
     menuImportance () {
-      return Object.fromEntries(this.taxon.importances.map(item => {
-        return [item.importance_group.type, item.level]
+      return Object.fromEntries(this.importanceGroups.map(item => {
+        return [item, this.taxon[item.toLowerCase()] || 0]
       }))
     },
     componentExist () {
@@ -60,21 +61,16 @@ export default {
   },
   data () {
     return {
-      taxon: undefined,
+      taxon: {},
       isLoading: false,
-      importanceGroups: [],
+      importanceGroups: ['Habit', 'Economic', 'Sanitary'],
       view: undefined
     }
   },
   async mounted () {
-    this.importanceGroups = (await makeRequest('get', '/importance-groups')).data
-
     makeRequest('get', `/taxons/${this.$route.params.id}`).then(response => {
       this.taxon = response.data
       this.$vuetify.goTo(0)
-      this.taxon.importances.forEach((item, index) => {
-        this.taxon.importances[index].importance_group = this.importanceGroups.find(group => group.id === item.importance_group)
-      })
       this.view = Object.keys(this.menuImportance)[Object.values(this.menuImportance).indexOf(Math.max(...Object.values(this.menuImportance)))]
     })
   },

@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      classLevel: ['primary', 'black', 'orange', 'red'],
+      classLevel: ['primary', 'yellow', 'orange', 'red'],
       buttons: [
         {
           icon: 'fa-bug',
@@ -90,7 +90,7 @@ export default {
       }
     },
     noImportance (button) {
-      return button.importance_group ? this.levels[button.type] === undefined : false
+      return button.importance_group ? !this.levels[button.type] : false
     }
   }
 }
