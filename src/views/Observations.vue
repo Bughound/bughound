@@ -2,6 +2,17 @@
   <v-container
     fluid
     class="pa-0">
+    <v-app-bar
+      rounded="false"
+      color="transparent"
+      flat
+    >
+      <v-toolbar-title>Observaciones</v-toolbar-title>
+      <v-spacer/>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </v-app-bar>
     <v-list two-line>
       <template v-for="(item) in observations">
         <v-list-item
@@ -24,6 +35,18 @@
         <v-divider :key="`${item.id}-divider`"/>
       </template>
     </v-list>
+    <v-btn
+      @click="pointMe()"
+      color="primary"
+      style="bottom: 80px"
+      dark
+      fixed
+      bottom
+      right
+      fab
+     >
+      <v-icon>mdi-filter</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
@@ -39,11 +62,12 @@ export default {
   },
   data () {
     return {
-      observations: []
+      observations: [],
+      tabs: ['Mis observaciones', 'Cercanas']
     }
   },
   mounted () {
-    makeRequest('get', '/observations').then(response => {
+    makeRequest('get', '/observations', { params: { _sort: 'id:DESC' } }).then(response => {
       const observationsResponse = response.data
       const promises = observationsResponse.map(observation => makeRequest('get', `/taxons/${observation.taxon.parent}`))
 

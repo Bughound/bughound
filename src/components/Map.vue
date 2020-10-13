@@ -20,7 +20,7 @@ L.Icon.Default.mergeOptions({
 })
 
 const BugIcon = L.divIcon({
-  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small primary blob red"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
+  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--x-small primary blob red"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
   iconSize: [40, 40],
   className: 'myDivIcon'
 })
@@ -32,7 +32,7 @@ const BugIcon = L.divIcon({
 // })
 
 const PositionIcon = L.divIcon({
-  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--small blue blob "><i class="v-icon notranslate fa fa-street-view theme--dark"></i></div>',
+  html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--x-small blue blob "><i class="v-icon notranslate fa fa-street-view theme--dark"></i></div>',
   iconSize: [40, 40],
   className: 'myDivIcon'
 })

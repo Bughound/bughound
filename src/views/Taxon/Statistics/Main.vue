@@ -1,7 +1,7 @@
 <template>
   <v-container
     fluid>
-    <h4 class="text-h6">Avistamientos</h4>
+    <span class="text-h5">Avistamientos</span>
     <v-divider/>
     <line-chart :chart-data="dataCollection"/>
   </v-container>

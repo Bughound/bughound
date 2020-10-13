@@ -1,15 +1,23 @@
 <template>
   <v-container
     fluid>
-    <h4 class="text-h6">Clima y habitat</h4>
+    <div class="mb-2">
+      <span class="text-h5">Habitat</span>
+    </div>
     <v-divider/>
 
     <v-row>
       <v-col
         class="subtitle-1">
-        Temperatura<br>
-        <span class="display-1">{{ Math.trunc(weather.temp.min) }} / {{ Math.trunc(weather.temp.max) }}&deg;C
-          <v-icon medium>fa-thermometer-three-quarters</v-icon>
+        <v-icon small>fa-cloud-sun</v-icon> Clima pred.<br>
+        <span class="text-h6 text-capitalize">{{ weatherPred }}</span>
+      </v-col>
+      <v-divider
+        vertical/>
+      <v-col
+        class="subtitle-1">
+        <v-icon small>fa-thermometer-three-quarters</v-icon> Temperatura<br>
+        <span class="text-h6">{{ Math.trunc(weather.temp.min) }} / {{ Math.trunc(weather.temp.max) }}&deg;C
         </span>
       </v-col>
 
@@ -18,13 +26,11 @@
 
       <v-col
         class="subtitle-1">
-        Humedad<br>
-        <span class="display-1">{{ Math.trunc(weather.humidity.min) }} / {{ Math.trunc(weather.humidity.max) }}%
-          <v-icon medium>fa-tint</v-icon>
+        <v-icon small>fa-tint</v-icon> Humedad<br>
+        <span class="text-h6">{{ Math.trunc(weather.humidity.min) }} / {{ Math.trunc(weather.humidity.max) }}%
         </span>
       </v-col>
     </v-row>
-    <h5 class="text-h6 mt-2">Zona</h5>
     <v-row>
       <v-col
         class="pt-0"
@@ -41,7 +47,6 @@
         </v-chip-group>
       </v-col>
     </v-row>
-    <h5 class="text-h6">Descripción</h5>
     <p v-html="taxon.habitat_description"></p>
   </v-container>
 </template>
@@ -49,7 +54,12 @@
 <script>
 
 import { TaxonStatistics } from '@/request/resources'
-import { inRange } from '@/helpers/math.js'
+const weatherRange = {
+  calido: 18,
+  templado: 12,
+  frio: 0,
+  polar: -30
+}
 
 export default {
   props: {
@@ -59,26 +69,14 @@ export default {
     }
   },
   computed: {
-    dayTime () {
-      return this.time ? inRange(this.time.min, 6, 19) || inRange(this.time.max, 6, 19) : false
-    },
-    nightTime () {
-      return this.time ? (inRange(this.time.max, 20, 23) || inRange(this.time.min, 0, 5)) : false
-    },
-    dayTimeString () {
-      if (this.dayTime && this.nightTime) {
-        return 'dia / noche'
-      } else if (this.dayTime) {
-        return 'dia'
-      } else {
-        return 'noche'
-      }
+    weatherPred () {
+      return this.weather ? this.getWeather(this.weather.temp.max - ((this.weather.temp.max - this.weather.temp.min) / 2)) : 'n/a'
     }
   },
   data () {
     return {
       time: undefined,
-      weather: {}
+      weather: undefined
     }
   },
   mounted () {
@@ -86,6 +84,11 @@ export default {
       this.time = response.data.time
       this.weather = response.data.weather
     })
+  },
+  methods: {
+    getWeather (temp) {
+      return Object.keys(weatherRange).find(k => temp > weatherRange[k])
+    }
   }
 }
 </script>

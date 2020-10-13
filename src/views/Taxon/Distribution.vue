@@ -39,7 +39,7 @@ export default {
 <style scoped>
 .map-container {
   position: relative;
-  top: -21px;
+  top: -27px;
   height: calc(100% - 200px)
 }
 </style>

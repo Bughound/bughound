@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-row justify-space-around ml-4 mr-4 navbar-taxon-view">
+  <div class="d-flex flex-row justify-space-around navbar-taxon-view">
     <template v-for="(button, index) in buttons">
       <v-btn
         fab

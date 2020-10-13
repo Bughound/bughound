@@ -14,9 +14,10 @@
     </div>
     <navigation-bar
       :levels="menuImportance"
-      class="navbar-position"
+      class="navbar-position ml-4 mr-4"
       v-model="view"/>
     <component
+      class="mt-2"
       v-if="componentExist"
       :taxon="taxon"
       :importance="menuImportance"
