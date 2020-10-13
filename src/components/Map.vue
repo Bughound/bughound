@@ -149,11 +149,19 @@ export default {
         if (feature.properties.popupContent) {
           layer.bindPopup(feature.properties.popupContent)
         }
-        if (feature.properties.importance) {
-          const icono = BugIcon
-          layer.setIcon(icono)
+        if (feature.properties.icon) {
+          layer.setIcon(this.insectIcon(feature.properties.icon, feature.properties.color))
+        } else {
+          layer.setIcon(BugIcon)
         }
       }
+    },
+    insectIcon (icon, color) {
+      return L.divIcon({
+        html: `<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--x-small blob ${color}"><i class="v-icon notranslate fa ${icon} theme--dark"></i></div>`,
+        iconSize: [40, 40],
+        className: 'myDivIcon'
+      })
     }
   }
 }

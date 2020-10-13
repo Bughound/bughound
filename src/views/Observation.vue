@@ -23,10 +23,6 @@
         :src="imageRoute(observation.image.url)"
         height="200"
       ></v-img>
-
-      <v-card-text v-if="observation.created_by">
-        Avistada por: {{ observation.created_by.first_name }} {{ observation.created_by.last_name }}
-      </v-card-text>
     </v-card>
       <v-tabs
         grow
@@ -36,15 +32,12 @@
           :key="tab">{{ tab }}
         </v-tab>
       </v-tabs>
-      <component
-        :is="componentView"
-        class="ma-5"
-        :taxon="observation.taxon"/>
       <map-component
         v-if="observation.geojson"
-        height="300px"
+        height="500px"
+        ref="leaflet"
         :geojson="[observation.geojson]"
-        :zoom-animation="false"
+        :zoom-animation="true"
         :max-zoom="12"/>
   </v-container>
 </template>
@@ -54,12 +47,10 @@
 import { makeRequest } from '@/helpers/makeRequest'
 import apiRoute from '@/helpers/apiRoute'
 import MapComponent from '@/components/Map.vue'
-import InformacionComponent from '@/views/Taxon/Information.vue'
 
 export default {
   components: {
-    MapComponent,
-    InformacionComponent
+    MapComponent
   },
   computed: {
     componentView () {
@@ -70,25 +61,23 @@ export default {
     return {
       isLoading: false,
       observation: undefined,
-      tabs: ['Informacion', 'Distribucion'],
+      tabs: ['Distribucion', 'Metadatos'],
       tabIndex: 0
     }
   },
-  mounted () {
-    makeRequest('get', `/observations/${this.$route.params.id}`).then(response => {
-      const observation = response.data
-      makeRequest('get', `/taxons/${observation.taxon.parent}`).then(parentResponse => {
-        observation.parent = parentResponse.data
-        this.observation = observation
-        this.isLoading = false
-        this.$vuetify.goTo(0)
-      })
+  async mounted () {
+    this.observation = (await makeRequest('get', `/observations/${this.$route.params.id}`)).data
+    this.observation.taxon.parent = (await makeRequest('get', `/taxons/${this.observation.taxon.parent}`)).data
+    this.isLoading = false
+    this.$vuetify.goTo(0)
+    this.$nextTick(() => {
+      this.$refs.leaflet.zoomToPoints()
     })
   },
   methods: {
     imageRoute: (path) => `${apiRoute}${path}`,
     composeScientificName (observation) {
-      return `${observation.parent.name} ${observation.taxon.name}`
+      return `${observation.taxon.parent.name} ${observation.taxon.name}`
     }
   }
 }

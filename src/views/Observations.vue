@@ -76,20 +76,12 @@ export default {
       tabs: ['Mis observaciones', 'Cercanas']
     }
   },
-  mounted () {
-    makeRequest('get', '/observations', { params: { _sort: 'id:DESC' } }).then(response => {
-      const observationsResponse = response.data
-      const promises = observationsResponse.map(observation => makeRequest('get', `/taxons/${observation.taxon.parent}`))
-
-      Promise.all(promises).then((parentsResponse) => {
-        const parents = parentsResponse.map(parent => parent.data)
-        this.observations = observationsResponse.map(observation => Object.assign(observation, { parent: parents.find(parent => parent.id === observation.taxon.parent) }))
-      })
-    })
+  async mounted () {
+    this.observations = (await makeRequest('get', '/observations', { params: { _sort: 'id:DESC' } })).data
   },
   methods: {
     composeScientificName (observation) {
-      return `${observation.parent.name} ${observation.taxon.name}`
+      return `${observation.taxon.parent.name} ${observation.taxon.name}`
     },
     displayDate (date) {
       const time = Object.values(this.createdAgo(date))
