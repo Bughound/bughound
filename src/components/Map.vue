@@ -132,9 +132,9 @@ export default {
         this.currentPosition.radius.addTo(this.map)
       }
     },
-    zoomToPoints () {
+    zoomToPoints (zoom = this.maxZoom) {
       this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.features.getBounds(), {
-        maxZoom: this.maxZoom
+        maxZoom: zoom
       })
     },
     zoomToUserLocation () {

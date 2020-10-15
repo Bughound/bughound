@@ -36,7 +36,7 @@
         v-if="observation.geojson"
         height="500px"
         ref="leaflet"
-        :geojson="[observation.geojson]"
+        :geojson="[feature]"
         :zoom-animation="true"
         :max-zoom="12"/>
   </v-container>
@@ -47,6 +47,7 @@
 import { makeRequest } from '@/helpers/makeRequest'
 import apiRoute from '@/helpers/apiRoute'
 import MapComponent from '@/components/Map.vue'
+import ImportanceColor from '@/views/Taxon/const/importanceColor'
 
 export default {
   components: {
@@ -55,6 +56,16 @@ export default {
   computed: {
     componentView () {
       return `${this.tabs[this.tabIndex]}Component`
+    },
+    feature () {
+      const geojson = this.observation.geojson
+      const obs = this.observation
+      const level = obs.taxon.economic || obs.taxon.sanitary
+
+      geojson.features[0].properties.icon = obs.taxon.economic === obs.taxon.sanitary ? 'fa-bug' : obs.taxon.economic > obs.taxon.sanitary ? 'fa-seedling' : 'fa-bug'
+      geojson.features[0].properties.color = ImportanceColor[level]
+
+      return geojson
     }
   },
   data () {
@@ -71,7 +82,7 @@ export default {
     this.isLoading = false
     this.$vuetify.goTo(0)
     this.$nextTick(() => {
-      this.$refs.leaflet.zoomToPoints()
+      this.$refs.leaflet.zoomToPoints(16)
     })
   },
   methods: {

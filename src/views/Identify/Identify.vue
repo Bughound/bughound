@@ -56,6 +56,10 @@ export default {
       show: false
     }
   },
+  created () {
+    this.$router.push({ name: 'Especie', params: { id: this.predictions[0].taxon.id } })
+    // :to="{ name: 'Especie', params: { id: observation.taxon.id } }"
+  },
   mounted () {
     this.$nextTick(() => {
       this.show = true
