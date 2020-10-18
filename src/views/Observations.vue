@@ -14,7 +14,7 @@
       </v-btn>
     </v-app-bar>
     <v-list two-line>
-      <template v-for="(item) in observations">
+      <template v-for="(item) in filteredList">
         <v-list-item
           :key="item.id"
           :to="{ name: 'Observacion', params: { id: item.id } }"
@@ -42,18 +42,45 @@
         <v-divider :key="`${item.id}-divider`"/>
       </template>
     </v-list>
-    <v-btn
-      @click="pointMe()"
-      color="primary"
-      style="bottom: 80px"
-      dark
-      fixed
+
+    <v-speed-dial
+      v-model="filter"
       bottom
       right
-      fab
-     >
-      <v-icon>mdi-filter</v-icon>
-    </v-btn>
+      direction="top"
+      style="bottom: 80px"
+      fixed
+      transition="slide-y-reverse-transition"
+    >
+      <template v-slot:activator>
+        <v-btn
+          color="primary"
+          dark
+          fab
+          medium
+          >
+          <v-icon
+            v-if="filter"
+            dark>
+            mdi-close
+          </v-icon>
+          <v-icon v-else>
+            mdi-filter
+          </v-icon>
+        </v-btn>
+      </template>
+      <v-btn
+        v-for="(btn, index) in filterButtons"
+        :key="index"
+        fab
+        dark
+        small
+        @click="setFilter(btn.value)"
+        :color="filterImportance.includes(btn.value) ? 'primary lighten-2' : 'primary'"
+      >
+        <v-icon>{{ btn.icon }}</v-icon>
+      </v-btn>
+    </v-speed-dial>
   </v-container>
 </template>
 
@@ -68,12 +95,27 @@ export default {
   computed: {
     importanceColor () {
       return ImportanceColor
+    },
+    filteredList () {
+      return this.observations.filter(item => this.filterImportance.length === 0 || this.filterImportance.some(filter => item.taxon[filter]))
     }
   },
   data () {
     return {
       observations: [],
-      tabs: ['Mis observaciones', 'Cercanas']
+      tabs: ['Mis observaciones', 'Cercanas'],
+      filterImportance: [],
+      filter: false,
+      filterButtons: [
+        {
+          icon: 'fa-heartbeat',
+          value: 'sanitary'
+        },
+        {
+          icon: 'fa-seedling',
+          value: 'economic'
+        }
+      ]
     }
   },
   async mounted () {
@@ -88,6 +130,15 @@ export default {
       const labels = ['dias', 'horas', 'minutos', 'segundos']
       const index = time.findIndex(item => item > 0)
       return `Hace ${time[index]} ${labels[index]}`
+    },
+    setFilter (value) {
+      const index = this.filterImportance.findIndex(filter => filter === value)
+
+      if (index > -1) {
+        this.filterImportance.splice(index, 1)
+      } else {
+        this.filterImportance.push(value)
+      }
     },
     imageRoute: (path) => `${apiRoute}${path}`,
     createdAgo: CreatedAgo

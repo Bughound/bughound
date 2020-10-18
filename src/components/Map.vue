@@ -84,15 +84,14 @@ export default {
       currentPosition: {
         marker: undefined,
         radius: undefined
-      }
+      },
+      markerClusters: L.markerClusterGroup()
     }
   },
   watch: {
     geojson: {
       handler (newVal) {
-        if (newVal.length) {
-          this.setGeoJSON(newVal)
-        }
+        this.setGeoJSON(newVal)
       },
       deep: true
     }
@@ -100,6 +99,9 @@ export default {
   mounted () {
     this.map = L.map(this.$refs.leafletMap, this.config).setView([0, 0], 2)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map)
+    if (this.clusters) {
+      this.map.addLayer(this.markerClusters)
+    }
     this.setGeoJSON(this.geojson)
   },
   methods: {
@@ -108,17 +110,18 @@ export default {
         onEachFeature: this.onEachFeature
       })
       if (this.clusters) {
-        const markers = L.markerClusterGroup()
-        markers.addLayers(this.features)
-        this.map.addLayer(markers)
+        this.markerClusters.clearLayers()
+        this.markerClusters.addLayers(this.features)
       } else {
         this.map.addLayer(this.features)
       }
     },
-    setUserLocation (coordinates, meters = 5) {
+    setUserLocation (coordinates, meters = 5000) {
       if (this.currentPosition.marker) {
+        console.log(meters)
         this.currentPosition.marker.setLatLng(coordinates)
         this.currentPosition.radius.setLatLng(coordinates)
+        this.currentPosition.radius.setRadius(meters)
       } else {
         this.currentPosition.marker = L.marker(coordinates).setIcon(PositionIcon)
         this.currentPosition.radius = L.circle(coordinates, {
@@ -126,7 +129,7 @@ export default {
           weight: 1,
           fillColor: '#2196F3',
           fillOpacity: 0.1,
-          radius: meters * 1000
+          radius: meters
         })
         this.currentPosition.marker.addTo(this.map)
         this.currentPosition.radius.addTo(this.map)

@@ -1,5 +1,6 @@
 <template>
   <v-container
+    class="pa-5"
     fluid>
     <div class="mb-2">
       <span class="text-h5">Habitat</span>
@@ -9,14 +10,14 @@
     <v-row>
       <v-col
         class="subtitle-1">
-        <v-icon small>fa-cloud-sun</v-icon> Clima pred.<br>
+        <v-icon small>fa-cloud-sun</v-icon> Clima<br>
         <span class="text-h6 text-capitalize">{{ weatherPred }}</span>
       </v-col>
       <v-divider
         vertical/>
       <v-col
         class="subtitle-1">
-        <v-icon small>fa-thermometer-three-quarters</v-icon> Temperatura<br>
+        <v-icon small>fa-thermometer-three-quarters</v-icon> Temp.<br>
         <span class="text-h6">{{ Math.trunc(weather.temp.min) }} / {{ Math.trunc(weather.temp.max) }}&deg;C
         </span>
       </v-col>

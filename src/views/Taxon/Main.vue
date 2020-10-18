@@ -34,6 +34,7 @@ import DistributionComponent from './Distribution'
 import StatisticsComponent from './Statistics/Main'
 import HabitatComponent from './Habitat'
 import HabitComponent from './Habit'
+import EconomicComponent from './Economic'
 import apiRoute from '@/helpers/apiRoute.js'
 import NavigationBar from './NavBar.vue'
 
@@ -44,7 +45,8 @@ export default {
     StatisticsComponent,
     SanitaryComponent,
     HabitatComponent,
-    HabitComponent
+    HabitComponent,
+    EconomicComponent
   },
   computed: {
     menuImportance () {

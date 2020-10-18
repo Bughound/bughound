@@ -1,5 +1,6 @@
 <template>
   <v-container
+    class="pa-5"
     fluid>
     <div class="d-inline-flex align-center mb-2">
       <span class="text-h5 mr-2">Comportamiento</span>

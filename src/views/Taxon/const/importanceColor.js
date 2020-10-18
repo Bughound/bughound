@@ -1,1 +1,1 @@
-export default ['primary', 'black', 'orange', 'red']
+export default ['primary', 'yellow', 'orange', 'red']

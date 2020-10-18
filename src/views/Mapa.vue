@@ -3,6 +3,65 @@
     fluid
     fill-height
     class="pa-0 ma-0 map-container">
+
+    <v-menu
+      v-model="menu"
+      min-width="100%"
+      width="100%"
+      offset-y
+      bottom
+      attach
+      style="top: -12px !important"
+      rounded="b-xl"
+      :close-on-content-click="false"
+      transition="slide-y-transition"
+    >
+      <v-card>
+        <v-card-title>
+          <h2 class="title">Importancia</h2>
+        </v-card-title>
+        <v-card-text>
+          <v-chip-group
+            v-model="filterSelected"
+            multiple
+            active-class="primary--text"
+          >
+            <v-chip
+              v-for="filter in filterType"
+              :key="filter.value"
+              :value="filter.value"
+            >
+              {{ filter.label }}
+            </v-chip>
+          </v-chip-group>
+
+          <v-slider
+            v-model="importanceLevel"
+            :tick-labels="['Ninguna', 'Baja', 'Media', 'Alta']"
+            :max="3"
+            step="1"
+            :color="importanceColor[importanceLevel]"
+            ticks="always"
+            persistent-hint
+            tick-size="4"
+          ></v-slider>
+        </v-card-text>
+        <v-card-text>
+          <v-slider
+            v-model="distance"
+            step="5"
+            line-color="blue"
+            thumb-color="blue"
+            thumb-label="always"
+            hint="Distancia (km)"
+            persistent-hint
+            max="100"
+            min="5"
+          ></v-slider>
+        </v-card-text>
+      </v-card>
+    </v-menu>
+
     <map-component
       ref="leaflet"
       clusters
@@ -20,6 +79,20 @@
       medium
      >
       <v-icon>mdi-crosshairs-gps</v-icon>
+    </v-btn>
+
+    <v-btn
+      @click="menu = true"
+      color="primary"
+      style="bottom: 150px"
+      dark
+      fixed
+      bottom
+      right
+      fab
+      medium
+     >
+      <v-icon>mdi-filter</v-icon>
     </v-btn>
   </v-container>
 </template>
@@ -41,7 +114,9 @@ export default {
   },
   computed: {
     geojson () {
-      return this.observations.filter(item => item.geojson).map(obs => {
+      return this.observations.filter(item => {
+        return item.geojson && (!this.filterSelected.length || this.filterSelected.some(filter => item.taxon[filter] <= this.importanceLevel && item.taxon[filter] > 0))
+      }).map(obs => {
         const level = obs.taxon.economic || obs.taxon.sanitary
         obs.geojson.features[0].properties.icon = obs.taxon.economic === obs.taxon.sanitary ? 'fa-bug' : obs.taxon.economic > obs.taxon.sanitary ? 'fa-seedling' : 'fa-bug'
         obs.geojson.features[0].properties.color = ImportanceColor[level]
@@ -65,13 +140,46 @@ export default {
   },
   data () {
     return {
+      fab: false,
       observations: [],
       options: {
         enableHighAccuracy: true,
         timeout: 5000,
         maximumAge: 0
       },
-      distance: 5
+      distance: 5,
+      menu: false,
+      importanceColor: ImportanceColor,
+      importanceLevel: 3,
+      filterType: [
+        {
+          label: 'Economica',
+          value: 'economic'
+        },
+        {
+          label: 'Sanitaria',
+          value: 'sanitary'
+        }
+      ],
+      filterSelected: []
+    }
+  },
+  watch: {
+    distance: {
+      async handler (newVal) {
+        const coordinates = await Geolocation.getCurrentPosition(this.options)
+        makeRequest('get', '/observations', {
+          params: {
+            lat: coordinates.coords.latitude,
+            long: coordinates.coords.longitude,
+            distance: this.distance
+          }
+        }).then(response => {
+          this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance * 1000)
+          this.$refs.leaflet.zoomToUserLocation()
+          this.observations = response.data
+        })
+      }
     }
   },
   async mounted () {
@@ -83,7 +191,7 @@ export default {
         distance: this.distance
       }
     }).then(response => {
-      this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance)
+      this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance * 1000)
       this.$refs.leaflet.zoomToUserLocation()
       this.observations = response.data
     })
@@ -91,7 +199,7 @@ export default {
   methods: {
     async pointMe () {
       const coordinates = await Geolocation.getCurrentPosition(this.options)
-      this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance)
+      this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance * 1000)
       this.$refs.leaflet.zoomToUserLocation()
     },
     imageRoute: (path) => `${apiRoute}${path}`
