@@ -111,7 +111,8 @@ export default {
       const base64PictureData = result.value
       const dataUrlPictureData = `data:image/jpeg;base64,${base64PictureData}`
       CameraPreview.stop()
-      this.processImage(dataURItoBlob(dataUrlPictureData))
+
+      this.clipImage(dataUrlPictureData)
     },
     async processImage (cameraImage) {
       const formData = new FormData()
@@ -144,6 +145,18 @@ export default {
         const coordinates = await Geolocation.getCurrentPosition(this.options)
         return makeGeoJSONFeature(coordinates.coords.latitude, coordinates.coords.longitude)
       }
+    },
+    clipImage (idata) {
+      var canvas = document.createElement('CANVAS')
+      var img = new Image()
+      img.onload = () => {
+        canvas.width = 300
+        canvas.height = 300
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, img.width / 2 - 250, img.height / 2 - 250, 450, 450, 0, 0, 300, 300)
+        this.processImage(dataURItoBlob(canvas.toDataURL('image/jpeg', 1.0)))
+      }
+      img.src = idata
     }
   },
   destroyed () {

@@ -50,7 +50,7 @@
           <v-slider
             v-model="distance"
             step="5"
-            line-color="blue"
+            color="blue"
             thumb-color="blue"
             thumb-label="always"
             hint="Distancia (km)"

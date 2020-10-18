@@ -21,6 +21,8 @@
 
       <v-img
         :src="imageRoute(observation.image.url)"
+        contain
+        class="grey darken-4"
         height="200"
       ></v-img>
     </v-card>

@@ -3,7 +3,7 @@
   "appName": "BugHound",
   "bundledWebRuntime": false,
   "webDir": "/home/josecito/Projects/bug_tracker/dist",
-  "linuxAndroidStudioPath": "/snap/android-studio/91/android-studio/bin/studio.sh",
+  "linuxAndroidStudioPath": "/snap/android-studio/current/android-studio/bin/studio.sh",
   "plugins": {
     "SplashScreen": {
       "launchShowDuration": 3000,
