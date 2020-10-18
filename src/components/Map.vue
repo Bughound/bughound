@@ -140,8 +140,10 @@ export default {
         maxZoom: zoom
       })
     },
-    zoomToUserLocation () {
-      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.currentPosition.radius.getBounds())
+    zoomToUserLocation (zoom) {
+      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.currentPosition.radius.getBounds(), {
+        maxZoom: zoom
+      })
     },
     setView (coordinates) {
       this.map.setView(coordinates)

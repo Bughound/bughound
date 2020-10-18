@@ -70,8 +70,9 @@
     <v-btn
       @click="pointMe()"
       color="primary"
-      style="bottom: 80px"
+      style="bottom: 150px"
       dark
+      elevation="2"
       fixed
       bottom
       right
@@ -84,7 +85,8 @@
     <v-btn
       @click="menu = true"
       color="primary"
-      style="bottom: 150px"
+      style="bottom: 80px"
+      elevation="2"
       dark
       fixed
       bottom
@@ -94,6 +96,30 @@
      >
       <v-icon>mdi-filter</v-icon>
     </v-btn>
+
+    <v-dialog
+      color="white"
+      v-model="isLoading"
+      fullscreen
+      hide-overlay>
+      <v-container
+      class="white"
+        fill-height
+        fluid>
+        <v-row align="center"
+          justify="center">
+          <v-col align="center">
+            <v-progress-circular
+              :width="7"
+              :size="100"
+              color="primary mb-15"
+              indeterminate
+            ></v-progress-circular>
+            <h3 class="text-h4 mt-15 font-weight-light">Cargando observaciones</h3>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -161,7 +187,8 @@ export default {
           value: 'sanitary'
         }
       ],
-      filterSelected: []
+      filterSelected: [],
+      isLoading: true
     }
   },
   watch: {
@@ -194,13 +221,14 @@ export default {
       this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance * 1000)
       this.$refs.leaflet.zoomToUserLocation()
       this.observations = response.data
+      this.isLoading = false
     })
   },
   methods: {
     async pointMe () {
       const coordinates = await Geolocation.getCurrentPosition(this.options)
       this.$refs.leaflet.setUserLocation(Object.values(coordinates.coords).slice(0, 2), this.distance * 1000)
-      this.$refs.leaflet.zoomToUserLocation()
+      this.$refs.leaflet.zoomToUserLocation(15)
     },
     imageRoute: (path) => `${apiRoute}${path}`
   }

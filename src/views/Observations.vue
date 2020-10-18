@@ -43,6 +43,30 @@
       </template>
     </v-list>
 
+    <v-dialog
+      color="white"
+      v-model="isLoading"
+      fullscreen
+      hide-overlay>
+      <v-container
+      class="white"
+        fill-height
+        fluid>
+        <v-row align="center"
+          justify="center">
+          <v-col align="center">
+            <v-progress-circular
+              :width="7"
+              :size="100"
+              color="primary mb-15"
+              indeterminate
+            ></v-progress-circular>
+            <h3 class="text-h4 mt-15 font-weight-light">Cargando observaciones</h3>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-dialog>
+
     <v-speed-dial
       v-model="filter"
       bottom
@@ -106,6 +130,7 @@ export default {
       tabs: ['Mis observaciones', 'Cercanas'],
       filterImportance: [],
       filter: false,
+      isLoading: true,
       filterButtons: [
         {
           icon: 'fa-heartbeat',
@@ -120,6 +145,7 @@ export default {
   },
   async mounted () {
     this.observations = (await makeRequest('get', '/observations', { params: { _sort: 'id:DESC' } })).data
+    this.isLoading = false
   },
   methods: {
     composeScientificName (observation) {

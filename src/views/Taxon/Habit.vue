@@ -2,11 +2,26 @@
   <v-container
     class="pa-5"
     fluid>
-    <div class="d-inline-flex align-center mb-2">
-      <span class="text-h5 mr-2">Comportamiento</span>
+    <div class="mb-2">
+      <span class="text-h5">Comportamiento</span>
     </div>
     <v-divider/>
 
+    <v-row>
+      <v-col
+        class="subtitle-1">
+        <v-icon small>fa-moon</v-icon>Actividad registrada<br>
+        <span class="text-h6 text-capitalize">{{ dayTimeString }}</span>
+      </v-col>
+      <v-divider
+        vertical/>
+
+      <v-col
+        class="subtitle-1">
+        <v-icon small>fa-clock</v-icon> Horario mas avistada<br>
+        <span class="text-h6">{{ time.max }}hs</span>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -31,24 +46,22 @@ export default {
     },
     dayTimeString () {
       if (this.dayTime && this.nightTime) {
-        return 'dia / noche'
+        return 'Diurna / Nocturna'
       } else if (this.dayTime) {
-        return 'dia'
+        return 'Diurna'
       } else {
-        return 'noche'
+        return 'Nocturna'
       }
     }
   },
   data () {
     return {
-      time: undefined,
-      weather: {}
+      time: undefined
     }
   },
   mounted () {
     TaxonStatistics(this.taxon.id).then(response => {
       this.time = response.data.time
-      this.weather = response.data.weather
     })
   }
 }
