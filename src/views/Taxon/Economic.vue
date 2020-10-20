@@ -14,9 +14,10 @@
       </v-chip>
     </div>
     <v-divider/>
+    <h5 class="text-h6 mt-4">Cultivos afectados</h5>
     <v-row>
       <v-col
-        class="pt-0 mt-2"
+        class="pt-0"
         cols="auto">
         <v-chip-group>
           <v-chip
