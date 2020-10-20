@@ -42,7 +42,7 @@ export default {
   },
   data () {
     return {
-      classLevel: ['primary', 'yellow', 'orange', 'red'],
+      classLevel: ['black', 'yellow', 'orange', 'red'],
       buttons: [
         {
           icon: 'fa-bug',
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     setColor (button) {
-      return `${button.type ? this.levels[button.type] ? this.classLevel[this.levels[button.type]] : 'primary' : 'primary'} ${button.type === this.value ? 'lighten-2' : ''}`
+      return `${button.importance_group ? this.classLevel[this.levels[button.type]] : 'primary'} ${button.type === this.value ? 'lighten-2' : ''}`
     },
     isSelected (button) {
       return this.value === button.type
@@ -86,7 +86,7 @@ export default {
     buttonStyle (disabled) {
       return {
         border: '4px solid white !important',
-        backgroundColor: disabled ? 'rgba(0,0,0,0.7) !important' : undefined
+        backgroundColor: disabled ? 'rgba(0, 0, 0, 1) !important' : undefined
       }
     },
     noImportance (button) {

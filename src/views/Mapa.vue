@@ -42,6 +42,7 @@
             step="1"
             :color="importanceColor[importanceLevel]"
             ticks="always"
+            track-color="primary"
             persistent-hint
             tick-size="4"
           ></v-slider>
@@ -54,6 +55,7 @@
             thumb-color="blue"
             thumb-label="always"
             hint="Distancia (km)"
+            track-color="primary"
             persistent-hint
             max="100"
             min="5"
@@ -70,7 +72,7 @@
     <v-btn
       @click="pointMe()"
       color="primary"
-      style="bottom: 150px"
+      style="bottom: 80px"
       dark
       elevation="2"
       fixed
@@ -83,9 +85,9 @@
     </v-btn>
 
     <v-btn
-      @click="menu = true"
+      @click="menu = !menu"
       color="primary"
-      style="bottom: 80px"
+      style="bottom: 150px"
       elevation="2"
       dark
       fixed
@@ -94,7 +96,14 @@
       fab
       medium
      >
-      <v-icon>mdi-filter</v-icon>
+      <v-icon
+        v-if="menu"
+        dark>
+        mdi-close
+      </v-icon>
+      <v-icon v-else>
+        mdi-filter
+      </v-icon>
     </v-btn>
 
     <v-dialog
