@@ -19,7 +19,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 })
 
-const BugIcon = L.divIcon({
+const BugIcon = new L.DivIcon({
   html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--x-small primary blob red"><i class="v-icon notranslate fa fa-bug theme--dark"></i></div>',
   iconSize: [40, 40],
   className: 'myDivIcon'
@@ -31,7 +31,7 @@ const BugIcon = L.divIcon({
 //  className: 'myDivIcon'
 // })
 
-const PositionIcon = L.divIcon({
+const PositionIcon = new L.DivIcon({
   html: '<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--x-small blue blob "><i class="v-icon notranslate fa fa-street-view theme--dark"></i></div>',
   iconSize: [40, 40],
   className: 'myDivIcon'
@@ -62,6 +62,10 @@ export default {
     clusters: {
       type: Boolean,
       default: false
+    },
+    addMarker: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -77,6 +81,7 @@ export default {
     return {
       map: undefined,
       features: [],
+      markers: undefined,
       config: {
         attributionControl: false,
         zoomControl: false
@@ -85,7 +90,7 @@ export default {
         marker: undefined,
         radius: undefined
       },
-      markerClusters: L.markerClusterGroup()
+      markerClusters: new L.MarkerClusterGroup()
     }
   },
   watch: {
@@ -97,16 +102,24 @@ export default {
     }
   },
   mounted () {
-    this.map = L.map(this.$refs.leafletMap, this.config).setView([0, 0], 2)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map)
+    this.map = new L.Map(this.$refs.leafletMap, this.config).setView([0, 0], 2)
+    this.handleEvents()
+    new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.map)
     if (this.clusters) {
       this.map.addLayer(this.markerClusters)
     }
+    this.markers = new L.LayerGroup().addTo(this.map)
     this.setGeoJSON(this.geojson)
   },
   methods: {
+    handleEvents () {
+      this.map.on('click', (e) => {
+        if (!this.addMarker) return
+        this.createMarker(e)
+      })
+    },
     setGeoJSON (geojson) {
-      this.features = L.geoJSON(geojson, {
+      this.features = new L.GeoJSON(geojson, {
         onEachFeature: this.onEachFeature
       })
       if (this.clusters) {
@@ -116,23 +129,31 @@ export default {
         this.map.addLayer(this.features)
       }
     },
+    clearLayers () {
+      this.markers.clearLayers()
+    },
     setUserLocation (coordinates, meters = 5000) {
       if (this.currentPosition.marker) {
-        console.log(meters)
         this.currentPosition.marker.setLatLng(coordinates)
+      } else {
+        this.currentPosition.marker = new L.Marker(coordinates).setIcon(PositionIcon)
+        this.currentPosition.marker.addTo(this.map)
+      }
+
+      if (this.currentPosition.radius) {
         this.currentPosition.radius.setLatLng(coordinates)
         this.currentPosition.radius.setRadius(meters)
       } else {
-        this.currentPosition.marker = L.marker(coordinates).setIcon(PositionIcon)
-        this.currentPosition.radius = L.circle(coordinates, {
-          color: '#2196F3',
-          weight: 1,
-          fillColor: '#2196F3',
-          fillOpacity: 0.1,
-          radius: meters
-        })
-        this.currentPosition.marker.addTo(this.map)
-        this.currentPosition.radius.addTo(this.map)
+        if (meters > 0) {
+          this.currentPosition.radius = new L.Circle(coordinates, {
+            color: '#2196F3',
+            weight: 1,
+            fillColor: '#2196F3',
+            fillOpacity: 0.1,
+            radius: meters
+          })
+          this.currentPosition.radius.addTo(this.map)
+        }
       }
     },
     zoomToPoints (zoom = this.maxZoom) {
@@ -141,7 +162,7 @@ export default {
       })
     },
     zoomToUserLocation (zoom) {
-      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.currentPosition.radius.getBounds(), {
+      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.currentPosition.radius ? this.currentPosition.radius.getBounds() : [this.currentPosition.marker.getLatLng()], {
         maxZoom: zoom
       })
     },
@@ -162,11 +183,17 @@ export default {
       }
     },
     insectIcon (icon, color) {
-      return L.divIcon({
+      return new L.DivIcon({
         html: `<div class="v-btn v-btn--depressed v-btn--fab v-btn--round theme--dark v-size--x-small blob ${color}"><i class="v-icon notranslate fa ${icon} theme--dark"></i></div>`,
         iconSize: [40, 40],
         className: 'myDivIcon'
       })
+    },
+    createMarker (e) {
+      const marker = new L.Marker(e.latlng)
+
+      this.markers.addLayer(marker)
+      this.$emit('onAddMarker', marker)
     }
   }
 }
