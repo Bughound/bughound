@@ -26,7 +26,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="isEconomicZone">
       <v-col
         class="pb-0"
         cols="12">
@@ -93,6 +93,9 @@ export default {
       set (value) {
         this.$emit('input', value)
       }
+    },
+    isEconomicZone () {
+      return this.zone.type === 'economic'
     }
   },
   data () {
