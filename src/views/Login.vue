@@ -46,7 +46,7 @@
 
         <v-btn
           class="mt-10 text-center"
-          color="success"
+          color="primary"
           max-width="344"
           rounded
           width="100%"

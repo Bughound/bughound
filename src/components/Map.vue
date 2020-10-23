@@ -108,7 +108,7 @@ export default {
     if (this.clusters) {
       this.map.addLayer(this.markerClusters)
     }
-    this.markers = new L.LayerGroup().addTo(this.map)
+    this.markers = new L.FeatureGroup().addTo(this.map)
     this.setGeoJSON(this.geojson)
   },
   methods: {
@@ -156,6 +156,11 @@ export default {
         }
       }
     },
+    zoomToMarkers (zoom = this.maxZoom) {
+      this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.markers.getBounds(), {
+        maxZoom: zoom
+      })
+    },
     zoomToPoints (zoom = this.maxZoom) {
       this.map[this.zoomAnimation ? 'flyToBounds' : 'fitBounds'](this.features.getBounds(), {
         maxZoom: zoom
@@ -193,7 +198,7 @@ export default {
       const marker = new L.Marker(e.latlng)
 
       this.markers.addLayer(marker)
-      this.$emit('onAddMarker', marker)
+      this.$emit('onAddMarker', marker.toGeoJSON())
     }
   }
 }
