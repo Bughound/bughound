@@ -88,6 +88,8 @@ import ZoneType from './New/ZoneType'
 import SanitaryImage from '@/assets/images/zones/sanitary.svg'
 import EconomicImage from '@/assets/images/zones/economic.svg'
 
+import { ActionNames } from '@/store/actions/actions'
+
 export default {
   components: {
     ZoneData,
@@ -131,6 +133,9 @@ export default {
     createZone () {
       this.step = 0
       this.isSaving = true
+      this.$store.dispatch(ActionNames.CreateZone, this.zone).then((zoneCreated) => {
+        this.isSaving = false
+      })
     }
   }
 }

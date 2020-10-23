@@ -16,7 +16,8 @@ const newStore = () => {
     user: undefined,
     observations: [],
     notifications: [],
-    predictions: []
+    predictions: [],
+    zones: []
   }
 }
 

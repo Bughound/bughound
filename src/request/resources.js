@@ -2,6 +2,8 @@ import { makeRequest } from '@/helpers/makeRequest.js'
 
 const CreateObservation = (data) => makeRequest('post', '/observations', data)
 
+const CreateZone = (data) => makeRequest('post', '/zones', data)
+
 const GetPathogen = (id) => makeRequest('get', `/pathogens/${id}`)
 
 const GetUser = () => makeRequest('get', '/users/me')
@@ -14,6 +16,7 @@ const TaxonStatistics = (id) => makeRequest('get', `/taxons/${id}/statistics`)
 
 export {
   CreateObservation,
+  CreateZone,
   GetPathogen,
   GetUser,
   TaxonStatistics,
