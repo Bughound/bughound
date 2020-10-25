@@ -60,6 +60,7 @@
           color="primary"
           rounded
           width="100%"
+          :disabled="!zone.name"
           large
           depressed
           >

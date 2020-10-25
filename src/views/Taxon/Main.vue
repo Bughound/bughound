@@ -6,7 +6,16 @@
     <div class="species-header">
       <v-img
         height="250px"
-        :src="imageRoute(taxon.image.url)"/>
+        :src="imageRoute(taxon.image.url)"
+        @click="zoomImage(imageRoute(taxon.image.url))"/>
+      <vue-easy-lightbox
+        escDisabled
+        moveDisabled
+        :visible="visible"
+        :imgs="imgs"
+        :index="index"
+        @hide="handleHide"
+      ></vue-easy-lightbox>
       <div class="species-description ml-6">
         <span class="text-h5 d-block font-italic">{{ taxon.parent.name }} {{ taxon.name }}</span>
         <span class="text-h6"><b>{{ taxon.common_name }}</b></span>
@@ -28,7 +37,6 @@
 
 <script>
 
-import { makeRequest } from '@/helpers/makeRequest.js'
 import SanitaryComponent from './Sanitary.vue'
 import DistributionComponent from './Distribution'
 import StatisticsComponent from './Statistics/Main'
@@ -37,6 +45,9 @@ import HabitComponent from './Habit'
 import EconomicComponent from './Economic'
 import apiRoute from '@/helpers/apiRoute.js'
 import NavigationBar from './NavBar.vue'
+
+import { makeRequest } from '@/helpers/makeRequest.js'
+import { PhotoViewer } from '@ionic-native/photo-viewer'
 
 export default {
   components: {
@@ -66,7 +77,10 @@ export default {
       taxon: {},
       isLoading: false,
       importanceGroups: ['Habit', 'Economic', 'Sanitary'],
-      view: undefined
+      view: undefined,
+      imgs: '', // Img Url , string or Array of string
+      visible: false,
+      index: 0
     }
   },
   async mounted () {
@@ -83,6 +97,9 @@ export default {
     },
     setView (view) {
       this.view = view
+    },
+    zoomImage (imageUrl) {
+      PhotoViewer.show(imageUrl)
     }
   }
 }

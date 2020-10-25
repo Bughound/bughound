@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.e5e729235806180ff90ca673f953de1b.js"
+  "/precache-manifest.b2f4575fe5e62b5ef48d4e3c1417bfa9.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "Bughound"});

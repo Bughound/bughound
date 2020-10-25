@@ -58,7 +58,7 @@ export default {
       classLevel: ['black', 'yellow', 'orange', 'red'],
       buttons: [
         {
-          icon: 'fa-chart-bar',
+          icon: 'fa-history',
           type: 'Timeline'
         },
         {

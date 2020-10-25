@@ -135,6 +135,7 @@ export default {
       this.isSaving = true
       this.$store.dispatch(ActionNames.CreateZone, this.zone).then((zoneCreated) => {
         this.isSaving = false
+        this.$router.push({ name: 'Zona', params: { id: zoneCreated.id } })
       })
     }
   }
