@@ -152,7 +152,7 @@ export default {
       return `${observation.taxon.parent.name} ${observation.taxon.name}`
     },
     displayDate (date) {
-      const time = Object.values(this.createdAgo(date))
+      const time = Object.values(CreatedAgo(date))
       const labels = ['dias', 'horas', 'minutos', 'segundos']
       const index = time.findIndex(item => item > 0)
       return `Hace ${time[index]} ${labels[index]}`
@@ -166,8 +166,7 @@ export default {
         this.filterImportance.push(value)
       }
     },
-    imageRoute: (path) => `${apiRoute}${path}`,
-    createdAgo: CreatedAgo
+    imageRoute: (path) => `${apiRoute}${path}`
   }
 }
 </script>

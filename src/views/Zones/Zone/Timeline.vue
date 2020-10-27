@@ -8,133 +8,46 @@
         group
       >
         <v-timeline-item
-          v-for="event in timeline"
-          :key="event.id"
+          v-for="observation in observations"
+          :key="observation.id"
           class="mb-4"
-          color="pink"
-          small
+          :color="getImportanceColor(observation.taxon)"
+          large
+          fill-dot
         >
+          <template v-slot:icon>
+            <v-avatar size="46">
+              <img
+                @click="loadTaxon(observation.taxon.id)"
+                :src="imageRoute(observation.taxon.image.formats.thumbnail.url)">
+            </v-avatar>
+          </template>
           <v-row justify="space-between">
-            <v-col
-              cols="7"
-              v-text="event.text"
-            ></v-col>
+            <v-col cols="7">
+              <span>{{ observation.taxon.common_name }}</span>
+              <div class="caption">
+                {{ observation.taxon.parent.name }} {{ observation.taxon.name }}
+              </div>
+            </v-col>
             <v-col
               class="text-right"
               cols="5"
-              v-text="event.time"
-            ></v-col>
+            >
+              <span class="text-caption">{{ displayDate(observation.date) }}</span>
+              <v-chip
+                class="white--text"
+                :color="getImportanceColor(observation.taxon)"
+                label
+                rounded
+                x-small
+              >
+                Alta
+              </v-chip>
+            </v-col>
           </v-row>
         </v-timeline-item>
       </v-slide-x-transition>
 
-      <v-timeline-item
-        class="mb-4"
-        color="grey"
-        icon-color="grey lighten-2"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            This order was archived.
-          </v-col>
-          <v-col
-            class="text-right"
-            cols="5"
-          >
-            15:26 EDT
-          </v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            <v-chip
-              class="white--text ml-0"
-              color="purple"
-              label
-              small
-            >
-              APP
-            </v-chip>
-            Digital Downloads fulfilled 1 item.
-          </v-col>
-          <v-col
-            class="text-right"
-            cols="5"
-          >
-            15:25 EDT
-          </v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        color="grey"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            Order confirmation email was sent to John Leider (john@vuetifyjs.com).
-          </v-col>
-          <v-col
-            class="text-right"
-            cols="5"
-          >
-            15:25 EDT
-          </v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        hide-dot
-      >
-        <v-btn
-          class="mx-0"
-        >
-          Resend Email
-        </v-btn>
-      </v-timeline-item>
-
-      <v-timeline-item
-        class="mb-4"
-        color="grey"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            A $15.00 USD payment was processed on PayPal Express Checkout
-          </v-col>
-          <v-col
-            class="text-right"
-            cols="5"
-          >
-            15:25 EDT
-          </v-col>
-        </v-row>
-      </v-timeline-item>
-
-      <v-timeline-item
-        color="grey"
-        small
-      >
-        <v-row justify="space-between">
-          <v-col cols="7">
-            John Leider placed this order on Online Store (checkout #1937432132572).
-          </v-col>
-          <v-col
-            class="text-right"
-            cols="5"
-          >
-            15:25 EDT
-          </v-col>
-        </v-row>
-      </v-timeline-item>
       <v-timeline-item
         class="mb-6"
         hide-dot
@@ -144,3 +57,35 @@
     </v-timeline>
   </v-container>
 </template>
+
+<script>
+
+import CreatedAgo from '@/helpers/createdAgo.js'
+import ImportanceColor from '@/views/Taxon/const/importanceColor.js'
+import apiRoute from '@/helpers/apiRoute'
+
+export default {
+  props: {
+    observations: {
+      type: Array,
+      required: true
+    }
+  },
+  methods: {
+    displayDate (date) {
+      const time = Object.values(CreatedAgo(date))
+      const labels = ['dias', 'horas', 'minutos', 'segundos']
+      const index = time.findIndex(item => item > 0)
+      return `Hace ${time[index]} ${labels[index]}`
+    },
+    getImportanceColor (taxon) {
+      const level = taxon.economic || taxon.sanitary
+      return ImportanceColor[level]
+    },
+    loadTaxon (taxonId) {
+      this.$router.push({ name: 'Especie', params: { id: taxonId } })
+    },
+    imageRoute: (path) => `${apiRoute}${path}`
+  }
+}
+</script>
