@@ -3,19 +3,37 @@
     fluid
     style="height: 100%;"
     class="pa-0">
+    <v-dialog
+      v-if="isLoading"
+      color="white"
+      v-model="isLoading"
+      fullscreen
+      hide-overlay>
+      <v-container
+      class="white"
+        fill-height
+        fluid>
+        <v-row align="center"
+          justify="center">
+          <v-col align="center">
+            <v-progress-circular
+              :width="7"
+              :size="100"
+              color="primary mb-15"
+              indeterminate
+            ></v-progress-circular>
+            <h3 class="text-h4 mt-15 font-weight-light">Cargando especie</h3>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-dialog>
+
+    <template v-else>
     <div class="species-header">
       <v-img
         height="250px"
         :src="imageRoute(taxon.image.url)"
         @click="zoomImage(imageRoute(taxon.image.url))"/>
-      <vue-easy-lightbox
-        escDisabled
-        moveDisabled
-        :visible="visible"
-        :imgs="imgs"
-        :index="index"
-        @hide="handleHide"
-      ></vue-easy-lightbox>
       <div class="species-description ml-6">
         <span class="text-h5 d-block font-italic">{{ taxon.parent.name }} {{ taxon.name }}</span>
         <span class="text-h6"><b>{{ taxon.common_name }}</b></span>
@@ -32,6 +50,7 @@
       :taxon="taxon"
       :importance="menuImportance"
       :is="componentView"/>
+    </template>
   </v-container>
 </template>
 
@@ -75,7 +94,7 @@ export default {
   data () {
     return {
       taxon: {},
-      isLoading: false,
+      isLoading: true,
       importanceGroups: ['Habit', 'Economic', 'Sanitary'],
       view: undefined,
       imgs: '', // Img Url , string or Array of string
@@ -86,6 +105,7 @@ export default {
   async mounted () {
     makeRequest('get', `/taxons/${this.$route.params.id}`).then(response => {
       this.taxon = response.data
+      this.isLoading = false
       this.$vuetify.goTo(0)
       this.view = Object.keys(this.menuImportance)[Object.values(this.menuImportance).indexOf(Math.max(...Object.values(this.menuImportance)))]
     })
