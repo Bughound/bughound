@@ -20,8 +20,9 @@
     <component
       class="mt-2"
       v-if="componentExist"
-      :taxon="taxon"
-      :importance="menuImportance"
+      :observations="observations"
+      :zone="zone"
+      :distance="distance"
       :is="componentView"/>
     <v-fab-transition>
       <v-btn
@@ -46,12 +47,14 @@
 
 import NavBar from './NavBar'
 import TimelineComponent from './Timeline'
+import DistributionComponent from './Distribution'
 import { makeRequest } from '@/helpers/makeRequest.js'
 import apiRoute from '@/helpers/apiRoute.js'
 
 export default {
   components: {
     NavBar,
+    DistributionComponent,
     TimelineComponent
   },
   computed: {
@@ -68,6 +71,7 @@ export default {
       isLoading: false,
       view: undefined,
       topButton: false,
+      distance: 100,
       zoneType: {
         sanitary: {
           label: 'Urbana',
@@ -77,14 +81,21 @@ export default {
           label: 'Rural',
           type: 'Económica'
         }
-      }
+      },
+      observations: []
     }
   },
-  async mounted () {
-    makeRequest('get', `/zones/${this.$route.params.id}`).then(response => {
-      this.zone = response.data
-      this.$vuetify.goTo(0)
-    })
+  async created () {
+    this.zone = (await makeRequest('get', `/zones/${this.$route.params.id}`)).data
+
+    this.observations = (await makeRequest('get', '/observations', {
+      params: {
+        lat: this.zone.geojson.geometry.coordinates[1],
+        long: this.zone.geojson.geometry.coordinates[0],
+        distance: this.distance
+      }
+    })).data
+    this.$vuetify.goTo(0)
   },
   methods: {
     imageRoute: (path) => `${apiRoute}${path}`,

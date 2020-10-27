@@ -120,6 +120,7 @@ export default {
     },
     setGeoJSON (geojson) {
       this.features = new L.GeoJSON(geojson, {
+        pointToLayer: this.pointToLayer,
         onEachFeature: this.onEachFeature
       })
       if (this.clusters) {
@@ -174,16 +175,26 @@ export default {
     setView (coordinates) {
       this.map.setView(coordinates)
     },
+    pointToLayer (feature, latlng) {
+      const shape = (feature.properties.radius ? new L.Circle(latlng, Number(feature.properties.radius)) : new L.Marker(latlng))
+      Object.assign(shape, { feature: feature })
+      return shape
+    },
     onEachFeature (feature, layer) {
-      layer.setIcon(BugIcon)
-      if (feature.properties) {
-        if (feature.properties.popupContent) {
-          layer.bindPopup(feature.properties.popupContent)
-        }
-        if (feature.properties.icon) {
-          layer.setIcon(this.insectIcon(feature.properties.icon, feature.properties.color))
-        } else {
-          layer.setIcon(BugIcon)
+      const featureType = feature.geometry.type
+      const isCircle = Object.prototype.hasOwnProperty.call(feature.properties, 'radius')
+
+      if (featureType === 'Point' && !isCircle) {
+        layer.setIcon(BugIcon)
+        if (feature.properties) {
+          if (feature.properties.popupContent) {
+            layer.bindPopup(feature.properties.popupContent)
+          }
+          if (feature.properties.icon) {
+            layer.setIcon(this.insectIcon(feature.properties.icon, feature.properties.color))
+          } else {
+            layer.setIcon(BugIcon)
+          }
         }
       }
     },
