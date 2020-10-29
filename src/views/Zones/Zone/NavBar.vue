@@ -1,7 +1,10 @@
 <template>
-  <div class="d-flex flex-row justify-space-between navbar-zone-view pl-6 pr-6">
-    <div class="justify-space-around">
-      <template v-for="(button, index) in buttons">
+  <div class="d-flex flex-row justify-space-between navbar-zone-view pl-6 pr-2">
+    <div
+      v-for="(column, index) in buttons"
+      class="justify-space-around"
+      :key="index">
+      <template v-for="(button, index) in column">
         <v-btn
           class="mr-4"
           fab
@@ -17,17 +20,6 @@
         </v-btn>
       </template>
     </div>
-    <v-btn
-      fab
-      dark
-      :width="50"
-      :height="50"
-      :class="{ 'selected lighten-2': isSelected('Alert') }"
-      :style="buttonStyle()"
-      @click="selectView('Alert')"
-      color="primary">
-      <v-icon dark>fa-bell</v-icon>
-    </v-btn>
   </div>
 </template>
 
@@ -56,7 +48,7 @@ export default {
   data () {
     return {
       classLevel: ['black', 'yellow', 'orange', 'red'],
-      buttons: [
+      buttons: [[
         {
           icon: 'fa-history',
           type: 'Timeline'
@@ -69,6 +61,15 @@ export default {
           icon: 'fa-map-marker-alt',
           type: 'Distribution'
         }
+      ],
+      [{
+        icon: 'fa-bell',
+        type: 'Alert'
+      },
+      {
+        icon: 'fa-cog',
+        type: 'Settings'
+      }]
       ]
     }
   },

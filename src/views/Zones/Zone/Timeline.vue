@@ -33,7 +33,7 @@
               class="text-right"
               cols="5"
             >
-              <span class="text-caption">{{ displayDate(observation.date) }}</span>
+              <span class="text-caption">{{ displayDate(observation.date) }}</span><br>
               <v-chip
                 class="white--text"
                 :color="getImportanceColor(observation.taxon)"

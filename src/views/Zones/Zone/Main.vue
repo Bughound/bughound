@@ -45,9 +45,11 @@
 
 <script>
 
+import { GetterNames } from '@/store/getters/getters'
 import NavBar from './NavBar'
 import TimelineComponent from './Timeline'
 import DistributionComponent from './Distribution'
+import SettingsComponent from './Settings'
 import { makeRequest } from '@/helpers/makeRequest.js'
 import apiRoute from '@/helpers/apiRoute.js'
 
@@ -55,7 +57,8 @@ export default {
   components: {
     NavBar,
     DistributionComponent,
-    TimelineComponent
+    TimelineComponent,
+    SettingsComponent
   },
   computed: {
     componentExist () {
@@ -63,11 +66,13 @@ export default {
     },
     componentView () {
       return `${this.view}Component`
+    },
+    zone () {
+      return this.$store.getters[GetterNames.GetZoneById](this.$route.params.id)
     }
   },
   data () {
     return {
-      zone: {},
       isLoading: false,
       view: undefined,
       topButton: false,
@@ -86,8 +91,6 @@ export default {
     }
   },
   async created () {
-    this.zone = (await makeRequest('get', `/zones/${this.$route.params.id}`)).data
-
     this.observations = (await makeRequest('get', '/observations', {
       params: {
         lat: this.zone.geojson.geometry.coordinates[1],

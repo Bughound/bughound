@@ -14,7 +14,7 @@
       </v-btn>
     </v-app-bar>
     <v-list two-line>
-      <template v-for="(zone) in filteredList">
+      <template v-for="(zone) in zones">
         <v-list-item
           :key="zone.id"
           :to="{ name: 'Zona', params: { id: zone.id } }"
@@ -50,50 +50,24 @@
       </v-btn>
     </v-fab-transition>
 
-    <v-dialog
-      color="white"
-      v-model="isLoading"
-      fullscreen
-      hide-overlay>
-      <v-container
-      class="white"
-        fill-height
-        fluid>
-        <v-row align="center"
-          justify="center">
-          <v-col align="center">
-            <v-progress-circular
-              :width="7"
-              :size="100"
-              color="primary mb-15"
-              indeterminate
-            ></v-progress-circular>
-            <h3 class="text-h4 mt-15 font-weight-light">Cargando zonas</h3>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-dialog>
-
   </v-container>
 </template>
 
 <script>
 
-import { makeRequest } from '@/helpers/makeRequest'
+import { GetterNames } from '@/store/getters/getters'
 import CreatedAgo from '@/helpers/createdAgo.js'
 import SanitaryImage from '@/assets/images/zones/sanitary.svg'
 import EconomicImage from '@/assets/images/zones/economic.svg'
 
 export default {
   computed: {
-    filteredList () {
-      return this.zones
+    zones () {
+      return this.$store.getters[GetterNames.GetZones]
     }
   },
   data () {
     return {
-      zones: [],
-      isLoading: true,
       zoneType: {
         sanitary: {
           label: 'Urbana',
@@ -105,10 +79,6 @@ export default {
         }
       }
     }
-  },
-  async mounted () {
-    this.zones = (await makeRequest('get', '/zones', { params: { _sort: 'id:DESC' } })).data
-    this.isLoading = false
   },
   methods: {
     displayDate (date) {

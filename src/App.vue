@@ -50,8 +50,9 @@ export default {
   },
   beforeCreate () {
     if (isAuthenticated()) {
-      this.$store.dispatch(ActionNames.LoadUser).catch(error => {
-        console.log(error.response)
+      this.$store.dispatch(ActionNames.LoadUser).then(() => {
+        this.$store.dispatch(ActionNames.LoadZones)
+      }).catch(error => {
         if (error.response.status === 401) {
           localStorage.removeItem('authtoken')
           this.$router.push({ name: 'Login' })
