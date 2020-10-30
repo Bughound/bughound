@@ -11,7 +11,7 @@
       class="d-flex align-center">
       <v-card-text class="pl-6 pt-0">
       <span class="text-h5 white--text font-weight-medium">{{ zone.name }}</span><br>
-      <span class="text-subtitle1 font-weight-light white--text"><b>{{ zoneType[zone.type].type }}</b></span>
+      <span class="text-subtitle1 font-weight-light white--text"><b>{{ zoneType[zone.type].label }} ({{ zoneType[zone.type].type }})</b></span>
       </v-card-text>
     </v-card>
     <nav-bar
@@ -20,7 +20,7 @@
     <component
       class="mt-2"
       v-if="componentExist"
-      :observations="observations"
+      :observations="filterObservations"
       :zone="zone"
       :distance="distance"
       :is="componentView"/>
@@ -71,6 +71,9 @@ export default {
     },
     zone () {
       return this.$store.getters[GetterNames.GetZoneById](this.$route.params.id)
+    },
+    filterObservations () {
+      return this.observations.filter(obs => obs.taxon[this.zone.type])
     }
   },
   data () {
@@ -97,7 +100,8 @@ export default {
       params: {
         lat: this.zone.geojson.geometry.coordinates[1],
         long: this.zone.geojson.geometry.coordinates[0],
-        distance: this.distance
+        distance: this.distance,
+        _sort: 'id:DESC'
       }
     })).data
     this.$vuetify.goTo(0)

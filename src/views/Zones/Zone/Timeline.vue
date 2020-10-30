@@ -35,25 +35,18 @@
             >
               <span class="text-caption">{{ displayDate(observation.date) }}</span><br>
               <v-chip
-                class="white--text"
+                class="white--text text-uppercase"
                 :color="getImportanceColor(observation.taxon)"
                 label
                 rounded
                 x-small
               >
-                Alta
+                {{ getImportanceLevel(observation.taxon) }}
               </v-chip>
             </v-col>
           </v-row>
         </v-timeline-item>
       </v-slide-x-transition>
-
-      <v-timeline-item
-        class="mb-6"
-        hide-dot
-      >
-        <span>INICIO</span>
-      </v-timeline-item>
     </v-timeline>
   </v-container>
 </template>
@@ -62,6 +55,7 @@
 
 import CreatedAgo from '@/helpers/createdAgo.js'
 import ImportanceColor from '@/views/Taxon/const/importanceColor.js'
+import ImportanceLevel from '@/views/Taxon/const/importanceLevel.js'
 import apiRoute from '@/helpers/apiRoute'
 
 export default {
@@ -81,6 +75,10 @@ export default {
     getImportanceColor (taxon) {
       const level = taxon.economic || taxon.sanitary
       return ImportanceColor[level]
+    },
+    getImportanceLevel (taxon) {
+      const level = taxon.economic || taxon.sanitary
+      return ImportanceLevel[level]
     },
     loadTaxon (taxonId) {
       this.$router.push({ name: 'Especie', params: { id: taxonId } })

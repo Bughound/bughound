@@ -112,12 +112,14 @@ export default {
         sanitary: {
           label: 'Urbana',
           description: 'Zonas enfocadas a la detección de especies potencialmente perjudiciales para la salud',
-          image: SanitaryImage
+          image: SanitaryImage,
+          distance: 5
         },
         economic: {
           label: 'Rural',
           description: 'Zonas agrícolas, enfocadas principalmente a la deteccion de plagas que afectan los cultivos',
-          image: EconomicImage
+          image: EconomicImage,
+          distance: 50
         }
       }
     }
@@ -133,6 +135,7 @@ export default {
     createZone () {
       this.step = 0
       this.isSaving = true
+      this.zone.distance = this.zoneType[this.zone.type].distance
       this.$store.dispatch(ActionNames.CreateZone, this.zone).then((zoneCreated) => {
         this.isSaving = false
         this.$router.push({ name: 'Zona', params: { id: zoneCreated.id } })

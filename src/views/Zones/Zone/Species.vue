@@ -28,7 +28,7 @@
                 :color="importanceColor[item.taxon.economic]">fa-seedling</v-icon>
             </v-list-item-action>
         </v-list-item>
-        <v-divider :key="`${item.id}-divider`"/>
+        <v-divider :key="`${item.taxon.id}-divider`"/>
       </template>
     </v-list>
 

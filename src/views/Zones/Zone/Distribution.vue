@@ -25,10 +25,6 @@ export default {
     zone: {
       type: Object,
       required: true
-    },
-    distance: {
-      type: Number,
-      required: true
     }
   },
   computed: {
@@ -36,8 +32,8 @@ export default {
       const zonePoint = JSON.parse(JSON.stringify(this.zone.geojson))
       const circleRadius = JSON.parse(JSON.stringify(this.zone.geojson))
 
-      circleRadius.properties.radius = this.distance * 1000
-      zonePoint.properties.icon = 'fa-seedling'
+      circleRadius.properties.radius = this.zone.distance * 1000
+      zonePoint.properties.icon = this.zone.type === 'economic' ? 'fa-seedling' : 'fa-home'
       zonePoint.properties.color = 'blue'
       const geoData = this.observations.filter(obs => obs.geojson).map(obs => {
         const level = obs.taxon.economic || obs.taxon.sanitary
@@ -64,7 +60,7 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      this.$refs.leaflet.zoomToPoints()
+      this.$refs.leaflet.zoomToPoints(null)
     })
   },
   methods: {
