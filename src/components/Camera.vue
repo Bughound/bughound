@@ -41,6 +41,7 @@
 
     <tutorial-component
       v-if="showTutorial"
+      style="position: absolute"
       :image="image"
       title="Identifique insectos"
       text="Apunte con la camara y posicione al insecto dentro del recuadro desde una posición dorsal o lateral del mismo para obtener un mejor resultado"

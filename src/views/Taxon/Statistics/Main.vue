@@ -4,7 +4,9 @@
     fluid>
     <span class="text-h5 ml-2">Avistamientos</span>
     <v-divider/>
-    <line-chart :chart-data="dataCollection"/>
+    <line-chart
+      :chart-data="dataCollection"
+      :options="options"/>
   </v-container>
 </template>
 
@@ -30,7 +32,16 @@ export default {
       months: Months,
       count: [],
       temp: {},
-      dataCollection: null
+      dataCollection: null,
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              stepSize: 1
+            }
+          }]
+        }
+      }
     }
   },
   mounted () {
@@ -43,6 +54,7 @@ export default {
   methods: {
     fillData (count) {
       this.dataCollection = {
+        stepSize: 1,
         labels: this.months,
         datasets: ((years = Object.keys(count)) => years.map((year, index) => {
           return {

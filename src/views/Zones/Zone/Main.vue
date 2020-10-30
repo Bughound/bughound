@@ -49,6 +49,7 @@ import { GetterNames } from '@/store/getters/getters'
 import NavBar from './NavBar'
 import TimelineComponent from './Timeline'
 import DistributionComponent from './Distribution'
+import SpeciesComponent from './Species'
 import SettingsComponent from './Settings'
 import { makeRequest } from '@/helpers/makeRequest.js'
 import apiRoute from '@/helpers/apiRoute.js'
@@ -58,7 +59,8 @@ export default {
     NavBar,
     DistributionComponent,
     TimelineComponent,
-    SettingsComponent
+    SettingsComponent,
+    SpeciesComponent
   },
   computed: {
     componentExist () {
@@ -74,7 +76,7 @@ export default {
   data () {
     return {
       isLoading: false,
-      view: undefined,
+      view: 'Distribution',
       topButton: false,
       distance: 100,
       zoneType: {
