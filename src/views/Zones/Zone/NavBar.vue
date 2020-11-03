@@ -64,7 +64,7 @@ export default {
       ],
       [{
         icon: 'fa-bell',
-        type: 'Alert'
+        type: 'Notifications'
       },
       {
         icon: 'fa-cog',

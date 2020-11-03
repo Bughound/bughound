@@ -10,6 +10,8 @@ const GetUser = () => makeRequest('get', '/users/me')
 
 const GetZones = (data) => makeRequest('get', '/zones', data)
 
+const GetAlerts = (data) => makeRequest('get', '/alerts', data)
+
 const RegisterUser = (data) => makeRequest('post', '/auth/local/register', data)
 
 const LoginUser = (data) => makeRequest('post', '/auth/local', data)
@@ -27,5 +29,6 @@ export {
   TaxonStatistics,
   RegisterUser,
   LoginUser,
-  UpdateZone
+  UpdateZone,
+  GetAlerts
 }

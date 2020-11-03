@@ -51,6 +51,7 @@ import TimelineComponent from './Timeline'
 import DistributionComponent from './Distribution'
 import SpeciesComponent from './Species'
 import SettingsComponent from './Settings'
+import NotificationsComponent from './Notifications'
 import { makeRequest } from '@/helpers/makeRequest.js'
 import apiRoute from '@/helpers/apiRoute.js'
 
@@ -58,6 +59,7 @@ export default {
   components: {
     NavBar,
     DistributionComponent,
+    NotificationsComponent,
     TimelineComponent,
     SettingsComponent,
     SpeciesComponent
