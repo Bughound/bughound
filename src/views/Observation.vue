@@ -24,6 +24,7 @@
         contain
         class="grey darken-4"
         height="200"
+        @click="zoomImage(imageRoute(observation.image.url))"
       ></v-img>
     </v-card>
       <v-tabs
@@ -50,6 +51,7 @@ import { makeRequest } from '@/helpers/makeRequest'
 import apiRoute from '@/helpers/apiRoute'
 import MapComponent from '@/components/Map.vue'
 import ImportanceColor from '@/views/Taxon/const/importanceColor'
+import { PhotoViewer } from '@ionic-native/photo-viewer'
 
 export default {
   components: {
@@ -91,6 +93,9 @@ export default {
     imageRoute: (path) => `${apiRoute}${path}`,
     composeScientificName (observation) {
       return `${observation.taxon.parent.name} ${observation.taxon.name}`
+    },
+    zoomImage (imageUrl) {
+      PhotoViewer.show(imageUrl)
     }
   }
 }

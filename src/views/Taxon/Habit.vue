@@ -4,15 +4,37 @@
     fluid>
     <div class="d-inline-flex align-center mb-2">
       <span class="text-h5 mr-2">Comportamiento</span>
-      <v-chip
-        dark
-        color="primary"
-        rounded
-        small
-        class="text-uppercase"
+      <v-dialog
+        v-model="dialog"
+        width="100%"
+        content-class="dialog-information"
+        origin="bottom center"
+        transition="slide-y-transition"
       >
-        {{ taxon.feeding.name }}
-      </v-chip>
+        <template v-slot:activator="{ on, attrs }">
+          <v-chip
+            dark
+            color="primary"
+            rounded
+            small
+            class="text-uppercase"
+            v-bind="attrs"
+            v-on="on"
+          >
+            {{ taxon.feeding.name }}
+          </v-chip>
+        </template>
+
+        <v-card>
+          <v-card-title class="text-capitalize">
+            {{ taxon.feeding.name }}
+          </v-card-title>
+
+          <v-card-text>
+            {{ taxon.feeding.description }}
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </div>
     <v-divider/>
 
@@ -84,7 +106,8 @@ export default {
   data () {
     return {
       time: undefined,
-      biologicalRelationships: []
+      biologicalRelationships: [],
+      dialog: false
     }
   },
   async mounted () {
@@ -95,3 +118,10 @@ export default {
   }
 }
 </script>
+<style>
+  .dialog-information {
+    margin: 0;
+    position: absolute;
+    top: 0px !important;
+  }
+</style>

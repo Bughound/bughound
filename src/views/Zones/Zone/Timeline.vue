@@ -18,8 +18,8 @@
           <template v-slot:icon>
             <v-avatar size="46">
               <img
-                @click="loadTaxon(observation.taxon.id)"
-                :src="imageRoute(observation.taxon.image.formats.thumbnail.url)">
+                @click="loadObservation(observation.id)"
+                :src="imageRoute(observation.image.formats.thumbnail.url)">
             </v-avatar>
           </template>
           <v-row justify="space-between">
@@ -80,8 +80,8 @@ export default {
       const level = taxon.economic || taxon.sanitary
       return ImportanceLevel[level]
     },
-    loadTaxon (taxonId) {
-      this.$router.push({ name: 'Especie', params: { id: taxonId } })
+    loadObservation (obsId) {
+      this.$router.push({ name: 'Observacion', params: { id: obsId } })
     },
     imageRoute: (path) => `${apiRoute}${path}`
   }

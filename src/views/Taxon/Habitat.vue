@@ -37,14 +37,36 @@
         class="pt-0"
         cols="auto">
         <v-chip-group>
-          <v-chip
+          <v-dialog
+            v-model="dialog"
             v-for="(zone, index) in [].concat(taxon.zone_types, taxon.habitats)"
             :key="index"
-            color="primary"
-            rounded
+            width="100%"
+            content-class="dialog-information"
+            origin="bottom center"
+            transition="slide-y-transition"
           >
-            {{ zone.name }}
-          </v-chip>
+            <template v-slot:activator="{ on, attrs }">
+              <v-chip
+                color="primary"
+                rounded
+                v-bind="attrs"
+                v-on="on"
+              >
+                {{ zone.name }}
+              </v-chip>
+            </template>
+
+            <v-card>
+              <v-card-title class="text-capitalize">
+                {{ zone.name }}
+              </v-card-title>
+
+              <v-card-text>
+                {{ zone.description }}
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-chip-group>
       </v-col>
     </v-row>
@@ -77,7 +99,8 @@ export default {
   data () {
     return {
       time: undefined,
-      weather: undefined
+      weather: undefined,
+      dialog: false
     }
   },
   mounted () {

@@ -20,14 +20,37 @@
         class="pt-0"
         cols="auto">
         <v-chip-group>
-          <v-chip
+          <v-dialog
+            v-model="dialog"
             v-for="(plant, index) in taxon.hosts"
             :key="index"
-            color="primary"
-            rounded
+            width="100%"
+            content-class="dialog-information"
+            origin="bottom center"
+            transition="slide-y-transition"
           >
-            {{ plant.name }}
-          </v-chip>
+            <template v-slot:activator="{ on, attrs }">
+              <v-chip
+                v-bind="attrs"
+                v-on="on"
+                :key="index"
+                color="primary"
+                rounded
+              >
+                {{ plant.name }}
+              </v-chip>
+            </template>
+
+            <v-card>
+              <v-card-title class="text-capitalize">
+                {{ plant.name }}
+              </v-card-title>
+
+              <v-card-text>
+                {{ plant.description }}
+              </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-chip-group>
       </v-col>
     </v-row>
