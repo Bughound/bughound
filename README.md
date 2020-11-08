@@ -1,9 +1,9 @@
 # BugHound
 
-Aplicación movil para la biodiversidad, destinada a la identificacion de insectos y sus caracteristicas relacionadas con la importancia economica y sanitaria de las regiones.
+Aplicación para la biodiversidad, destinada a la identificación de insectos y su importancia económica y sanitaria de las regiones.
 
-Proyecto desarrollado como trabajo de tesina como enfoque a la utilizacion de interfaces para la biodiversidad.
-Taller 5 de la carrera de diseño multimedial de la facultad de artes de la UNLP.
+Tesis de grado de la Lic. de Diseño Multimedial, enfocado en la creación de interfaces innovadoras para la biodiversidad.
+
 
 ------
 
