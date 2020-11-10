@@ -38,7 +38,7 @@
         cols="auto">
         <v-chip-group>
           <v-dialog
-            v-model="dialog"
+            v-model="dialog[index]"
             v-for="(zone, index) in [].concat(taxon.zone_types, taxon.habitats)"
             :key="index"
             width="100%"
@@ -100,7 +100,7 @@ export default {
     return {
       time: undefined,
       weather: undefined,
-      dialog: false
+      dialog: {}
     }
   },
   mounted () {
