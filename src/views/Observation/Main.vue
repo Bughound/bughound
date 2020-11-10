@@ -35,13 +35,10 @@
           :key="tab">{{ tab }}
         </v-tab>
       </v-tabs>
-      <map-component
-        v-if="observation.geojson"
-        height="500px"
-        ref="leaflet"
-        :geojson="[feature]"
-        :zoom-animation="true"
-        :max-zoom="12"/>
+      <component
+        v-if="componentExist"
+        :observation="observation"
+        :is="componentView"/>
   </v-container>
 </template>
 
@@ -49,15 +46,20 @@
 
 import { makeRequest } from '@/helpers/makeRequest'
 import apiRoute from '@/helpers/apiRoute'
-import MapComponent from '@/components/Map.vue'
 import ImportanceColor from '@/views/Taxon/const/importanceColor'
 import { PhotoViewer } from '@ionic-native/photo-viewer'
+import DistribucionComponent from './Map'
+import MetadatosComponent from './Metadata'
 
 export default {
   components: {
-    MapComponent
+    DistribucionComponent,
+    MetadatosComponent
   },
   computed: {
+    componentExist () {
+      return this.$options.components[`${this.componentView}`]
+    },
     componentView () {
       return `${this.tabs[this.tabIndex]}Component`
     },
