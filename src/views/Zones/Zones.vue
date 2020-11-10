@@ -29,7 +29,10 @@
           </v-list-item-content>
           <v-list-item-action>
             <v-list-item-action-text>{{ displayDate(zone.created_at) }}</v-list-item-action-text>
-            </v-list-item-action>
+            <v-icon
+              :color="zone.alerts.length ? 'red' : ''"
+              small>fa-bell</v-icon>
+          </v-list-item-action>
         </v-list-item>
         <v-divider :key="`${zone.id}-divider`"/>
       </template>
@@ -56,6 +59,7 @@
 <script>
 
 import { GetterNames } from '@/store/getters/getters'
+import { ActionNames } from '@/store/actions/actions'
 import CreatedAgo from '@/helpers/createdAgo.js'
 import SanitaryImage from '@/assets/images/zones/sanitary.svg'
 import EconomicImage from '@/assets/images/zones/economic.svg'
@@ -79,6 +83,9 @@ export default {
         }
       }
     }
+  },
+  beforeCreate () {
+    this.$store.dispatch(ActionNames.LoadZones)
   },
   methods: {
     displayDate (date) {

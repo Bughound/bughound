@@ -12,8 +12,9 @@
           :key="index"
           :width="50"
           :height="50"
+          :disabled="needRecords(button)"
           :class="{ 'selected lighten-2': isSelected(button) }"
-          :style="buttonStyle()"
+          :style="buttonStyle(needRecords(button))"
           @click="selectView(button)"
           color="primary">
           <v-icon dark>{{ button.icon }}</v-icon>
@@ -33,6 +34,14 @@ export default {
     value: {
       type: String,
       default: undefined
+    },
+    observations: {
+      type: Array,
+      required: true
+    },
+    alerts: {
+      type: Array,
+      required: true
     }
   },
   computed: {
@@ -51,11 +60,13 @@ export default {
       buttons: [[
         {
           icon: 'fa-history',
-          type: 'Timeline'
+          type: 'Timeline',
+          needRecords: 'observations'
         },
         {
           icon: 'fa-bug',
-          type: 'Species'
+          type: 'Species',
+          needRecords: 'observations'
         },
         {
           icon: 'fa-map-marker-alt',
@@ -64,7 +75,8 @@ export default {
       ],
       [{
         icon: 'fa-bell',
-        type: 'Notifications'
+        type: 'Notifications',
+        needRecords: 'alerts'
       },
       {
         icon: 'fa-cog',
@@ -85,6 +97,9 @@ export default {
         border: '4px solid white !important',
         backgroundColor: disabled ? 'rgba(0, 0, 0, 1) !important' : undefined
       }
+    },
+    needRecords (button) {
+      return button.needRecords ? this[button.needRecords].length === 0 : false
     }
   }
 }

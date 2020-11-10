@@ -16,7 +16,7 @@
           <v-list-item-content>
             <v-list-item-title v-html="composeScientificName(item.observation)"></v-list-item-title>
             <v-list-item-subtitle>{{ item.observation.taxon.common_name }}</v-list-item-subtitle>
-            <v-list-item-subtitle>{{ getDistanceFromZone(item.observation.geojson) }} Kms de la zona</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ getDistanceFromZone(item.observation.geojson) }} Kms de la ubicación</v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
             <v-list-item-action-text>{{ displayDate(item.created_at) }}</v-list-item-action-text>

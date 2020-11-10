@@ -16,13 +16,16 @@
     </v-card>
     <nav-bar
       v-model="view"
+      :observations="observations"
+      :alerts="zone.alerts"
       class="navbar-position"/>
     <component
       class="mt-2"
       v-if="componentExist"
       :observations="filterObservations"
       :zone="zone"
-      :distance="distance"
+      :distance="zone.distance"
+      @onUpdate="loadObservations"
       :is="componentView"/>
     <v-fab-transition>
       <v-btn
@@ -83,7 +86,6 @@ export default {
       isLoading: false,
       view: 'Distribution',
       topButton: false,
-      distance: 100,
       zoneType: {
         sanitary: {
           label: 'Urbana',
@@ -97,16 +99,8 @@ export default {
       observations: []
     }
   },
-  async created () {
-    this.observations = (await makeRequest('get', '/observations', {
-      params: {
-        lat: this.zone.geojson.geometry.coordinates[1],
-        long: this.zone.geojson.geometry.coordinates[0],
-        distance: this.distance,
-        _sort: 'id:DESC'
-      }
-    })).data
-    this.$vuetify.goTo(0)
+  created () {
+    this.loadObservations()
   },
   methods: {
     imageRoute: (path) => `${apiRoute}${path}`,
@@ -119,6 +113,17 @@ export default {
       this.topButton = top > 20
     },
     toTop () {
+      this.$vuetify.goTo(0)
+    },
+    async loadObservations () {
+      this.observations = (await makeRequest('get', '/observations', {
+        params: {
+          lat: this.zone.geojson.geometry.coordinates[1],
+          long: this.zone.geojson.geometry.coordinates[0],
+          distance: this.zone.distance,
+          _sort: 'id:DESC'
+        }
+      })).data
       this.$vuetify.goTo(0)
     }
   }

@@ -33,6 +33,22 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col class="pt-12">
+        <v-slider
+          v-model="zoneEdit.distance"
+          step="5"
+          color="blue"
+          thumb-color="blue"
+          thumb-label="always"
+          track-color="primary"
+          persistent-hint
+          label="Distancia (km)"
+          max="100"
+          min="5"
+        ></v-slider>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col class="pt-0">
         <v-checkbox
           v-model="zoneEdit.notifications"
@@ -83,6 +99,7 @@ export default {
     return {
       zoneEdit: {
         name: this.zone.name,
+        distance: this.zone.distance,
         plants: this.zone.plants,
         notifications: this.zone.notifications
       },
@@ -95,7 +112,9 @@ export default {
   },
   methods: {
     updateZone () {
-      this.$store.dispatch(ActionNames.UpdateZone, { id: this.zone.id, zone: this.zoneEdit })
+      this.$store.dispatch(ActionNames.UpdateZone, { id: this.zone.id, zone: this.zoneEdit }).then((response) => {
+        this.$emit('onUpdate', response)
+      })
     }
   }
 }
