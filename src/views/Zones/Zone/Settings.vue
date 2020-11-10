@@ -36,7 +36,6 @@
       <v-col class="pt-12">
         <v-slider
           v-model="zoneEdit.distance"
-          step="5"
           color="blue"
           thumb-color="blue"
           thumb-label="always"
@@ -44,7 +43,7 @@
           persistent-hint
           label="Distancia (km)"
           max="100"
-          min="5"
+          min="1"
         ></v-slider>
       </v-col>
     </v-row>

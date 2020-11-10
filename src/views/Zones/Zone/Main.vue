@@ -43,6 +43,29 @@
         <v-icon>fa-angle-up</v-icon>
       </v-btn>
     </v-fab-transition>
+    <v-dialog
+      color="white"
+      v-model="isLoading"
+      fullscreen
+      hide-overlay>
+      <v-container
+      class="white"
+        fill-height
+        fluid>
+        <v-row align="center"
+          justify="center">
+          <v-col align="center">
+            <v-progress-circular
+              :width="7"
+              :size="100"
+              color="primary mb-15"
+              indeterminate
+            ></v-progress-circular>
+            <h3 class="text-h4 mt-15 font-weight-light">Refrescando zona</h3>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -99,7 +122,7 @@ export default {
       observations: []
     }
   },
-  created () {
+  async created () {
     this.loadObservations()
   },
   methods: {
@@ -116,6 +139,7 @@ export default {
       this.$vuetify.goTo(0)
     },
     async loadObservations () {
+      this.isLoading = true
       this.observations = (await makeRequest('get', '/observations', {
         params: {
           lat: this.zone.geojson.geometry.coordinates[1],
@@ -124,7 +148,7 @@ export default {
           _sort: 'id:DESC'
         }
       })).data
-      this.$vuetify.goTo(0)
+      this.isLoading = false
     }
   }
 }

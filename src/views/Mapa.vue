@@ -18,7 +18,7 @@
     >
       <v-card>
         <v-card-title>
-          <h2 class="title">Importancia</h2>
+          <h2 class="title">Filtro</h2>
         </v-card-title>
         <v-card-text>
           <v-chip-group
@@ -35,17 +35,19 @@
             </v-chip>
           </v-chip-group>
 
-          <v-slider
+          <v-chip-group
             v-model="importanceLevel"
-            :tick-labels="['Ninguna', 'Baja', 'Media', 'Alta']"
-            :max="3"
-            step="1"
-            :color="importanceColor[importanceLevel]"
-            ticks="always"
-            track-color="primary"
-            persistent-hint
-            tick-size="4"
-          ></v-slider>
+            multiple
+            active-class="primary--text"
+          >
+            <v-chip
+              v-for="(label, index) in importanceLevels"
+              :key="label"
+              :value="index"
+            >
+              {{ label }}
+            </v-chip>
+          </v-chip-group>
         </v-card-text>
         <v-card-text>
           <v-slider
@@ -138,6 +140,7 @@ import MapComponent from '@/components/Map.vue'
 import { makeRequest } from '@/helpers/makeRequest'
 import { Plugins } from '@capacitor/core'
 import ImportanceColor from '@/views/Taxon/const/importanceColor'
+import ImportanceLevel from '@/views/Taxon/const/importanceLevel'
 import apiRoute from '@/helpers/apiRoute'
 
 const { Geolocation } = Plugins
@@ -149,9 +152,9 @@ export default {
   },
   computed: {
     geojson () {
-      return this.observations.filter(item => {
-        return item.geojson && (!this.filterSelected.length || this.filterSelected.some(filter => item.taxon[filter] <= this.importanceLevel && item.taxon[filter] > 0))
-      }).map(obs => {
+      return this.observations.filter(item => item.geojson &&
+        (!this.filterSelected.length || this.filterSelected.some(filter => (item.taxon[filter] > 0))) &&
+        ((this.importanceLevel.length === 0) || this.filterType.some(filter => this.importanceLevel.includes(item.taxon[filter.value])))).map(obs => {
         const level = obs.taxon.economic || obs.taxon.sanitary
         obs.geojson.features[0].properties.icon = obs.taxon.economic === obs.taxon.sanitary ? 'fa-bug' : obs.taxon.economic > obs.taxon.sanitary ? 'fa-seedling' : 'fa-bug'
         obs.geojson.features[0].properties.color = ImportanceColor[level]
@@ -185,7 +188,8 @@ export default {
       distance: 5,
       menu: false,
       importanceColor: ImportanceColor,
-      importanceLevel: 3,
+      importanceLevel: [],
+      importanceLevels: ImportanceLevel,
       filterType: [
         {
           label: 'Economica',
